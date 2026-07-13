@@ -33,7 +33,7 @@
         "text": "发现"
       },
       {
-        "pagePath": "pages/aiGuide/aiGuide",
+        "pagePath": "pages/guide/list/list",
         "text": "攻略"
       },
       {

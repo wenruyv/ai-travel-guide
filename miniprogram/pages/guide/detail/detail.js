@@ -19,6 +19,8 @@ Page({
     aiPresets: (mock.aiAssistant && mock.aiAssistant.presets) || [],
     fromAi: false,
     rawCollapsed: true, // raw 召回笔记默认折叠
+    rawLines: [], // 社区攻略按行展示数组
+    parsedCollapsed: true, // AI 解析节点默认折叠
   },
 
   onLoad(query) {
@@ -43,6 +45,15 @@ Page({
       fromAi: query.from === 'ai' || (guide && (guide.source === 'ai' || guide.source === 'raw')),
       fromBuddy: query.from === 'buddy', // 从搭子详情跳来时露出"邀请搭子进空间"按钮
     });
+    // 社区攻略(raw)：将原始内容按行拆分，标记Day行和空行
+    if (guide && guide.rawContent) {
+      const rawLines = guide.rawContent.split('\n').map(line => ({
+        text: line,
+        isDay: /^[Dd]ay\s*\d+/.test(line.trim()),
+        isEmpty: !line.trim()
+      }));
+      this.setData({ rawLines });
+    }
     // 把每个节点已有的历史问答直接铺到下方（不再用弹幕）
     if (guide) {
       this.initTalks(guide);
@@ -263,6 +274,11 @@ Page({
   onSave() {
     wx.showToast({ title: '已保存到我的攻略', icon: 'success' });
     this.setData({ editable: false });
+  },
+
+  // 折叠/展开 AI 解析结果（社区攻略辅助）
+  toggleParsed() {
+    this.setData({ parsedCollapsed: !this.data.parsedCollapsed });
   },
 
   // 折叠/展开 raw 召回笔记

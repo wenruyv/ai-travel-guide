@@ -171,7 +171,7 @@ Page({
   },
 
   goGuideList() {
-    wx.navigateTo({ url: '/pages/guide/list/list' });
+    wx.switchTab({ url: '/pages/guide/list/list' });
   },
 
   onOpenHistory(e) {

@@ -504,6 +504,64 @@
   line-height: 1.5;
 }
 
+/* 社区攻略按行展示 */
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1f1f1f;
+  margin-bottom: 16rpx;
+}
+.raw-lines {
+  background: #fff8f9;
+  border-radius: 16rpx;
+  padding: 24rpx 20rpx;
+  line-height: 1.8;
+}
+.raw-line {
+  font-size: 28rpx;
+  color: #444;
+  padding: 4rpx 0;
+}
+.raw-line-day {
+  margin-top: 20rpx;
+  padding: 12rpx 16rpx;
+  background: linear-gradient(135deg, #fff0f3, #fff5e6);
+  border-radius: 12rpx;
+  border-left: 6rpx solid #ff5a7a;
+}
+.raw-day-marker {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #c0394d;
+}
+.raw-line-empty {
+  height: 16rpx;
+}
+/* AI 解析折叠/展开 */
+.parsed-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  padding: 16rpx 24rpx;
+  background: #f5f6fa;
+  border-radius: 100rpx;
+}
+.parsed-toggle-text {
+  font-size: 26rpx;
+  color: #7c3aed;
+  font-weight: 500;
+}
+.parsed-toggle-arrow {
+  font-size: 22rpx;
+  color: #7c3aed;
+}
+.parsed-section {
+  margin-top: 16rpx;
+  padding-top: 16rpx;
+  border-top: 2rpx dashed #e0e0e0;
+}
+
 /* raw 召回笔记折叠卡 */
 .raw-source-tag {
   display: inline-block;

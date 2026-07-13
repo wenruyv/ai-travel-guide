@@ -129,7 +129,7 @@ Page({
       content: '需要先选攻略（与搭子的路线契约），是否前往攻略库挑选？',
       success: (r) => {
         if (!r.confirm) return;
-        wx.navigateTo({ url: '/pages/guide/list/list' });
+        wx.switchTab({ url: '/pages/guide/list/list' });
       },
     });
   },

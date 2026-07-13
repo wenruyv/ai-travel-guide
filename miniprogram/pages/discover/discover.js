@@ -40,8 +40,9 @@ Page({
     this.setData({ list });
   },
   // 去打卡页
+  // 跳转到 AI 攻略生成页（发现页顶部入口）
   goAiGuide() {
-    wx.switchTab({ url: '/pages/aiGuide/aiGuide' });
+    wx.navigateTo({ url: '/pages/aiGuide/aiGuide' });
   },
   goCheckin() {
     wx.navigateTo({ url: '/pages/checkin/checkin' });

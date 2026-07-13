@@ -31,7 +31,13 @@
         </view>
         <view class="row between mt16 stat">
           <text>👤 {{item.author}}</text>
-          <text>❤️ {{item.likes}} · 📋 {{item.copies}}次复制</text>
+          <view class="row" style="gap:12rpx">
+            <text wx:if="{{item.source === 'ai'}}" class="source-badge source-ai">🤖 AI生成</text>
+            <text wx:elif="{{item.source === 'xhs'}}" class="source-badge source-xhs">📕 小红书</text>
+            <text wx:elif="{{item.source === 'mafengwo'}}" class="source-badge source-mafengwo">🧭 马蜂窝</text>
+            <text wx:else class="source-badge source-local">✍️ 原创攻略</text>
+            <text>❤️ {{item.likes}} · 📋 {{item.copies}}次复制</text>
+          </view>
         </view>
       </view>
     </view>

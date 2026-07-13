@@ -40,28 +40,74 @@ Page({
     const ds = e.currentTarget.dataset;
     const name = ds.name;
     const dest = ds.dest || '';
+    const buddy = this.data.all.find((b) => b.id === ds.id) || {};
     wx.showModal({
-      title: '发起邀约',
-      content: `向「${name}」发送同行邀约并开私聊？`,
-      confirmText: '发送',
+      title: '与「' + name + '」拼成同行',
+      content: `你们将共同建立旅行空间，攻略【${buddy.guideId ? this._guideTitle(buddy.guideId) : '未选'}】将作为本次出行路线骨架。`,
+      confirmText: '拼成',
       success: (r) => {
         if (!r.confirm) return;
-        const preset = `你好${name}，看到你要去${dest}，我想结伴同行，方便一起吗？`;
+        // 1. 自动建空间
+        const space = this._createSpaceOnPair(buddy);
+        // 2. 建/复用会话并写回 spaceId
+        const convId = 'conv_' + (ds.id || name);
+        const conv = this._linkSpaceToConv(convId, space.id, name, ds.avatar, dest);
+        // 3. 跳转到聊天详情
+        const preset = `你好${name}，看到你要去${dest}，我按攻略【${space.title}】建了咱们的旅行空间，一起共编吧！`;
         wx.navigateTo({
           url:
-            '/pages/chatDetail/chatDetail?id=conv_' +
-            (ds.id || name) +
-            '&name=' +
-            encodeURIComponent(name) +
-            '&avatar=' +
-            encodeURIComponent(ds.avatar || '🧳') +
-            '&preset=' +
-            encodeURIComponent(preset),
+            '/pages/chatDetail/chatDetail?id=' + conv.id +
+            '&name=' + encodeURIComponent(name) +
+            '&avatar=' + encodeURIComponent(ds.avatar || '🧳') +
+            '&preset=' + encodeURIComponent(preset) +
+            '&spaceId=' + space.id,
         });
       },
     });
   },
+
+  _guideTitle(gid) {
+    const g = mock.guides.find((g) => g.id === gid);
+    return g ? g.title : '未选';
+  },
+
+  // 拼成时自动建空间（mock：写入 storage，真实场景用后端 API）
+  _createSpaceOnPair(buddy) {
+    const guide = mock.guides.find((g) => g.id === buddy.guideId) || {};
+    const space = {
+      id: 'sp_' + Date.now(),
+      guideId: buddy.guideId,
+      title: (buddy.destination || guide.destination || '未命名') + '之旅',
+      cover: guide.cover || '🧳',
+      destination: buddy.destination || guide.destination || '',
+      days: guide.days || 0,
+      budget: guide.budget || 0,
+      travelDate: buddy.dateRange || '',
+      createdAt: new Date().toISOString().slice(0, 10),
+      members: [
+        { id: 'u1', nickname: '我', avatar: '🧑', role: 'member',
+          creditScore: 92, pastTrips: 3, tags: ['靠谱', '准时'] },
+        { id: buddy.id, nickname: buddy.nickname, avatar: buddy.avatar, role: 'member',
+          creditScore: 88, pastTrips: 2, tags: buddy.interests || ['新搭子'] },
+      ],
+    };
+    try {
+      const spaces = wx.getStorageSync('travelSpaces') || [];
+      spaces.push(space);
+      wx.setStorageSync('travelSpaces', spaces);
+    } catch (e) {}
+    return space;
+  },
+
+  _linkSpaceToConv(convId, spaceId, name, avatar, dest) {
+    try {
+      const convMap = wx.getStorageSync('conversationSpace') || {};
+      convMap[convId] = spaceId;
+      wx.setStorageSync('conversationSpace', convMap);
+    } catch (e) {}
+    return { id: convId, spaceId, name, avatar, dest };
+  },
   onPost() {
-    wx.showToast({ title: '发布搭子需求(开发中)', icon: 'none' });
+    wx.navigateTo({ url: '/pages/postBuddy/postBuddy' });
   },
 });

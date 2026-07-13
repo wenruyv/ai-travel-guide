@@ -1,0 +1,100 @@
+<view class="container">
+  <view class="card form-card">
+    <view class="form-title">📣 发布搭子需求</view>
+    <view class="form-sub">发搭子必带攻略，拼成后自动建旅行空间</view>
+
+    <view class="form-row">
+      <text class="form-label">👤 昵称</text>
+      <input class="form-input" placeholder="如 登山客阿泽" value="{{form.nickname}}" bindinput="onNicknameInput" />
+    </view>
+
+    <view class="form-row">
+      <text class="form-label">🧳 头像</text>
+      <picker range="{{avatarOptions}}" value="{{avatarIndex}}" bindchange="onAvatarChange">
+        <view class="picker">{{form.avatar}} ▾</view>
+      </picker>
+    </view>
+
+    <view class="form-row">
+      <text class="form-label">📍 目的地</text>
+      <input class="form-input" placeholder="如 四川·稻城亚丁" value="{{form.destination}}" bindinput="onDestInput" />
+    </view>
+
+    <view class="form-row">
+      <text class="form-label">🗓 日期范围</text>
+      <input class="form-input" placeholder="如 10.01 - 10.07" value="{{form.dateRange}}" bindinput="onDateInput" />
+    </view>
+
+    <view class="form-row">
+      <text class="form-label">💰 预算</text>
+      <input class="form-input" placeholder="如 3000-5000" value="{{form.budget}}" bindinput="onBudgetInput" />
+    </view>
+
+    <view class="form-row">
+      <text class="form-label">🎯 兴趣</text>
+      <view class="interest-row">
+        <text class="interest-chip {{item.selected ? 'on' : ''}}"
+              wx:for="{{interestOptions}}" wx:key="*this"
+              data-name="{{item}}" bindtap="onToggleInterest">{{item}}</text>
+      </view>
+    </view>
+
+    <view class="form-row">
+      <text class="form-label">📝 介绍</text>
+      <textarea class="form-textarea" placeholder="找什么样的搭子、节奏偏好" value="{{form.intro}}" bindinput="onIntroInput" />
+    </view>
+  </view>
+
+  <!-- 攻略选择（必填项，攻略即契约） -->
+  <view class="card guide-card">
+    <view class="form-title">📑 选择攻略（必选）</view>
+    <view class="form-sub">拼成后攻略将作为本次出行的路线骨架，所有成员可共编</view>
+
+    <view wx:if="{{!form.guideId}}" class="guide-empty" bindtap="onPickGuide">
+      <text class="empty-icon">📑</text>
+      <text class="empty-tip">点击选择攻略</text>
+    </view>
+
+    <view wx:else class="guide-selected" bindtap="onPickGuide">
+      <view class="gs-cover">{{selectedGuide.cover}}</view>
+      <view class="gs-info">
+        <view class="gs-title">{{selectedGuide.title}}</view>
+        <view class="gs-meta">{{selectedGuide.destination}} · {{selectedGuide.days}}天 · ¥{{selectedGuide.budget}}</view>
+        <view class="gs-author">by {{selectedGuide.author}}</view>
+      </view>
+      <text class="gs-change">更换 ▾</text>
+    </view>
+
+    <view class="guide-actions">
+      <view class="btn btn-ghost" bindtap="onAiGenerate">🤖 AI 生成攻略</view>
+    </view>
+  </view>
+
+  <!-- 攻略选择弹层 -->
+  <view wx:if="{{showGuidePicker}}" class="modal-mask" bindtap="onClosePicker">
+    <view class="modal-body" catchtap="">
+      <view class="modal-title">选择攻略</view>
+      <scroll-view scroll-y class="guide-list">
+        <view class="guide-item {{form.guideId === item.id ? 'on' : ''}}"
+              wx:for="{{guides}}" wx:key="id"
+              data-id="{{item.id}}" bindtap="onSelectGuide">
+          <view class="gi-cover">{{item.cover}}</view>
+          <view class="gi-info">
+            <view class="gi-title">{{item.title}}</view>
+            <view class="gi-meta">{{item.destination}} · {{item.days}}天 · ¥{{item.budget}}</view>
+            <view class="row wrap mt8">
+              <text class="gi-tag" wx:for="{{item.tags}}" wx:for-item="t" wx:key="*this">{{t}}</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+      <view class="btn btn-primary" bindtap="onClosePicker">关闭</view>
+    </view>
+  </view>
+
+  <view class="submit-bar">
+    <view class="btn btn-primary {{!canSubmit ? 'disabled' : ''}}" bindtap="onSubmit">发布搭子</view>
+  </view>
+
+  <view wx:if="{{!canSubmit}}" class="tip-bar">⚠️ 请填写完整并选择攻略后再发布</view>
+</view>

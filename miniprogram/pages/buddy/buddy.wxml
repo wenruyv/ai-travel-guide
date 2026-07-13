@@ -40,7 +40,8 @@
       <text class="tag" wx:for="{{item.interests}}" wx:for-item="it" wx:key="*this">{{it}}</text>
     </view>
     <view class="intro mt16">{{item.intro}}</view>
-    <view class="btn btn-ghost mt16" data-name="{{item.nickname}}" data-id="{{item.id}}" data-avatar="{{item.avatar}}" data-dest="{{item.destination}}" bindtap="onInvite">✉️ 发起邀约</view>
+    <view class="btn btn-ghost mt16" data-name="{{item.nickname}}" data-id="{{item.id}}" data-avatar="{{item.avatar}}" data-dest="{{item.destination}}" bindtap="onInvite">🤝 拼成同行</view>
+    <view wx:if="{{item.guideId}}" class="guide-hint">📑 已选攻略：点击「拼成」即建空间</view>
   </view>
 
   <view wx:if="{{list.length === 0}}" class="empty">暂无匹配搭子，放宽条件试试~</view>

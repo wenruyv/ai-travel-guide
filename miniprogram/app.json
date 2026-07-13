@@ -11,7 +11,9 @@
     "pages/postDetail/postDetail",
     "pages/chat/chat",
     "pages/chatDetail/chatDetail",
-    "pages/mine/mine"
+    "pages/mine/mine",
+    "pages/postBuddy/postBuddy",
+    "pages/space/space"
   ],
   "window": {
     "backgroundTextStyle": "light",

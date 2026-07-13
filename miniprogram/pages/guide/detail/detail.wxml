@@ -19,6 +19,13 @@
     <view wx:if="{{guide.source === 'ai'}}" class="ai-summary-bar mt8">📚 数据来源：本地攻略库 + 小红书 / 马蜂窝实时召回，可继续向 AI 行程助手追问～</view>
     <view wx:if="{{guide.source === 'xhs' || guide.source === 'mafengwo'}}" class="raw-source-bar mt8">🤖 AI 已从 <text class="raw-source-name">{{guide.rawSource}}</text> 召回「{{guide.rawAuthor}}」的笔记并智能解析，可继续向 AI 行程助手追问～</view>
 
+    <!-- 邀请搭子进空间（fromBuddy=true 时露出） -->
+    <view wx:if="{{fromBuddy}}" class="invite-space-bar mt12" bindtap="onInviteBuddy">
+      <text class="isb-icon">🤝</text>
+      <text class="isb-text">邀请搭子进空间</text>
+      <text class="isb-go">立即邀请 ›</text>
+    </view>
+
     <!-- 原始召回笔记卡片（折叠） -->
     <view wx:if="{{guide.source === 'xhs' || guide.source === 'mafengwo'}}" class="raw-source-card mt12">
       <view class="raw-card-head" bindtap="toggleRawSource">

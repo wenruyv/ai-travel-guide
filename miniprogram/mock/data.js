@@ -396,6 +396,7 @@ const buddies = [
     interests: ['徒步', '摄影'],
     match: 96,
     intro: '想找个能一起徒步牛奶海的搭子，AA制，节奏可商量。',
+    guideId: 'g1',
   },
   {
     id: 'b2',
@@ -407,6 +408,7 @@ const buddies = [
     interests: ['文艺', '美食', '拍照'],
     match: 88,
     intro: '慢节奏出游，喜欢咖啡馆和扫街，希望搭子也不赶行程。',
+    guideId: 'g2',
   },
   {
     id: 'b3',
@@ -418,6 +420,7 @@ const buddies = [
     interests: ['钓鱼', '露营'],
     match: 79,
     intro: '找有船钓经验的搭子，分摊船费和饵料。',
+    guideId: 'g3',
   },
   {
     id: 'b4',
@@ -429,6 +432,7 @@ const buddies = [
     interests: ['赏樱', '拍照', '和服'],
     match: 92,
     intro: '关西赏樱6日，想找同好一起拍樱花，可拼房分摊住宿。',
+    guideId: 'g5',
   },
   {
     id: 'b5',
@@ -440,6 +444,7 @@ const buddies = [
     interests: ['寺庙', '美食', '性价比'],
     match: 85,
     intro: '清迈慢游7天，喜欢逛夜市和骑车，AA制不赶行程。',
+    guideId: 'g4',
   },
   {
     id: 'b6',
@@ -451,6 +456,7 @@ const buddies = [
     interests: ['艺术', '建筑', '浪漫'],
     match: 81,
     intro: '巴黎+小镇8日，逛博物馆看展，希望搭子也爱艺术。',
+    guideId: 'g5',
   },
 ];
 
@@ -1314,6 +1320,84 @@ function parseRawGuide(raw) {
   return nodes;
 }
 
+// ==================== 旅行空间（搭子拼成后建立） ====================
+// 一次出行 = 一个 space，搭子对可建多个 space
+// 攻略即契约：space.guideId 决定本次出行的路线骨架，所有成员共编
+// 平权模式：所有成员 role: 'member'，都能改攻略+记账+收款
+const travelSpaces = [
+  {
+    id: 'sp1',
+    guideId: 'g1', // 绑 g1 川西环线
+    title: '川西稻城亚丁星空之旅',
+    cover: '🏔️',
+    destination: '四川·甘孜',
+    days: 7,
+    budget: 4500,
+    travelDate: '2024-10-01',
+    createdAt: '2024-09-15',
+    members: [
+      { id: 'u1', nickname: '我', avatar: '🧑', role: 'member',
+        creditScore: 92, pastTrips: 3, tags: ['靠谱', '准时'] },
+      { id: 'u2', nickname: '登山客阿泽', avatar: '🧗', role: 'member',
+        creditScore: 96, pastTrips: 5, tags: ['靠谱', '有趣'] },
+    ],
+  },
+  {
+    id: 'sp2',
+    guideId: 'g5', // 绑 g5 巴黎+小镇
+    title: '巴黎艺术漫游',
+    cover: '🗼',
+    destination: '法国·巴黎',
+    days: 8,
+    budget: 18800,
+    travelDate: '2024-05-01',
+    createdAt: '2024-04-20',
+    members: [
+      { id: 'u1', nickname: '我', avatar: '🧑', role: 'member',
+        creditScore: 92, pastTrips: 3, tags: ['靠谱', '准时'] },
+      { id: 'u6', nickname: '欧游日记', avatar: '🗼', role: 'member',
+        creditScore: 88, pastTrips: 2, tags: ['艺术', '浪漫'] },
+    ],
+  },
+];
+
+// 旅账：差额AA，任一成员付，结算时算净转账
+const spaceLedger = [
+  // sp1 川西
+  { id: 'l1', spaceId: 'sp1', title: '稻城亚丁景区门票', amount: 540, category: '门票',
+    payerId: 'u1', date: '2024-10-02', splits: ['u1', 'u2'] },
+  { id: 'l2', spaceId: 'sp1', title: '星空帐篷营地住宿', amount: 1376, category: '住宿',
+    payerId: 'u2', date: '2024-10-03', splits: ['u1', 'u2'] },
+  { id: 'l3', spaceId: 'sp1', title: '新都桥牦牛肉汤锅', amount: 240, category: '餐饮',
+    payerId: 'u1', date: '2024-10-04', splits: ['u1', 'u2'] },
+  { id: 'l4', spaceId: 'sp1', title: '包车费(成都-稻城往返)', amount: 780, category: '交通',
+    payerId: 'u2', date: '2024-10-05', splits: ['u1', 'u2'] },
+  // sp2 巴黎
+  { id: 'l5', spaceId: 'sp2', title: '卢浮宫门票', amount: 320, category: '门票',
+    payerId: 'u6', date: '2024-05-02', splits: ['u1', 'u6'] },
+  { id: 'l6', spaceId: 'sp2', title: '塞纳河游船晚餐', amount: 880, category: '餐饮',
+    payerId: 'u1', date: '2024-05-03', splits: ['u1', 'u6'] },
+];
+
+// 攻略共编留痕：每条编辑记录 {user, idx, oldVal, newVal, time}
+const spaceEdits = [
+  { id: 'e1', spaceId: 'sp1', userId: 'u2', nodeIdx: 2,
+    oldVal: '冲古寺', newVal: '冲古寺+珍珠海',
+    time: '2024-09-20 14:23', reason: '珍珠海徒步半小时就到，多一个景点不亏' },
+  { id: 'e2', spaceId: 'sp1', userId: 'u1', nodeIdx: 4,
+    oldVal: '稻城阳光酒店 标间200元', newVal: '稻城阳光酒店 标间220元(含早)',
+    time: '2024-09-22 10:15', reason: '含早餐省事' },
+  { id: 'e3', spaceId: 'sp2', userId: 'u6', nodeIdx: 1,
+    oldVal: '卢浮宫(2小时)', newVal: '卢浮宫(半天)+杜伊勒里花园',
+    time: '2024-04-25 16:40', reason: '加杜伊勒里花园顺路，春天郁金香超美' },
+];
+
+// 会话 ↔ 空间 关联（拼成后自动建空间，spaceId 写回会话）
+const conversationSpace = {
+  'c1-b1': 'sp1',  // 我 ↔ 登山客阿泽 → sp1
+  'c1-b6': 'sp2',  // 我 ↔ 欧游日记 → sp2
+};
+
 module.exports = {
   guides,
   buddies,
@@ -1332,4 +1416,8 @@ module.exports = {
   aiTemplateScenes,
   mockAiGenerate,
   parseRawGuide,
+  travelSpaces,
+  spaceLedger,
+  spaceEdits,
+  conversationSpace,
 };

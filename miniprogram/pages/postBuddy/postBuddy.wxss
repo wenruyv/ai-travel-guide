@@ -1,0 +1,91 @@
+/* pages/postBuddy/postBuddy.wxss */
+.container { padding: 24rpx 24rpx 200rpx; background: #f5f6f8; min-height: 100vh; }
+.card { background: #fff; border-radius: 24rpx; padding: 32rpx; margin-bottom: 24rpx; box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.04); }
+.form-title { font-size: 36rpx; font-weight: 700; color: #1a1a1a; }
+.form-sub { font-size: 24rpx; color: #999; margin-top: 8rpx; margin-bottom: 24rpx; }
+.form-row { display: flex; align-items: flex-start; padding: 20rpx 0; border-top: 1rpx solid #f0f0f0; }
+.form-row:first-of-type { border-top: none; padding-top: 0; }
+.form-label { width: 160rpx; font-size: 28rpx; color: #333; flex-shrink: 0; padding-top: 12rpx; }
+.form-input { flex: 1; font-size: 28rpx; color: #1a1a1a; height: 56rpx; line-height: 56rpx; }
+.form-textarea { flex: 1; font-size: 28rpx; color: #1a1a1a; height: 120rpx; padding: 12rpx 0; }
+.picker { flex: 1; font-size: 28rpx; color: #1a1a1a; height: 56rpx; line-height: 56rpx; }
+
+.interest-row { flex: 1; display: flex; flex-wrap: wrap; gap: 16rpx; padding-top: 4rpx; }
+.interest-chip {
+  padding: 8rpx 20rpx; border-radius: 32rpx; background: #f5f6f8;
+  font-size: 24rpx; color: #666;
+}
+.interest-chip.on { background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%); color: #fff; }
+
+/* 攻略选择 */
+.guide-card { border: 2rpx dashed #ff8e53; background: linear-gradient(135deg, #fff7f0 0%, #fff 100%); }
+.guide-empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 48rpx 0; gap: 16rpx; background: #fff; border-radius: 16rpx;
+}
+.empty-icon { font-size: 80rpx; }
+.empty-tip { font-size: 26rpx; color: #ff8e53; }
+.guide-selected {
+  display: flex; align-items: center; padding: 24rpx; background: #fff;
+  border-radius: 16rpx; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.06);
+}
+.gs-cover { width: 100rpx; height: 100rpx; background: #fff7f0; border-radius: 16rpx;
+  display: flex; align-items: center; justify-content: center; font-size: 60rpx; flex-shrink: 0; }
+.gs-info { flex: 1; margin-left: 20rpx; min-width: 0; }
+.gs-title { font-size: 30rpx; font-weight: 700; color: #1a1a1a;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gs-meta { font-size: 24rpx; color: #666; margin-top: 8rpx; }
+.gs-author { font-size: 22rpx; color: #999; margin-top: 4rpx; }
+.gs-change { font-size: 24rpx; color: #ff8e53; margin-left: 16rpx; flex-shrink: 0; }
+
+.guide-actions { margin-top: 24rpx; }
+
+/* 攻略弹层 */
+.modal-mask {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5); z-index: 999;
+  display: flex; align-items: flex-end;
+}
+.modal-body {
+  width: 100%; max-height: 80vh; background: #fff; border-radius: 32rpx 32rpx 0 0;
+  padding: 32rpx; display: flex; flex-direction: column;
+}
+.modal-title { font-size: 32rpx; font-weight: 700; text-align: center; margin-bottom: 24rpx; }
+.guide-list { max-height: 60vh; }
+.guide-item {
+  display: flex; align-items: center; padding: 24rpx;
+  border-radius: 16rpx; margin-bottom: 16rpx; background: #f8f9fa;
+}
+.guide-item.on { background: #fff7f0; border: 2rpx solid #ff8e53; }
+.gi-cover { width: 100rpx; height: 100rpx; background: #fff; border-radius: 16rpx;
+  display: flex; align-items: center; justify-content: center; font-size: 56rpx; flex-shrink: 0; }
+.gi-info { flex: 1; margin-left: 20rpx; min-width: 0; }
+.gi-title { font-size: 28rpx; font-weight: 600; color: #1a1a1a;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gi-meta { font-size: 24rpx; color: #666; margin-top: 6rpx; }
+.gi-tag {
+  display: inline-block; padding: 2rpx 14rpx; background: #f0f0f0;
+  border-radius: 16rpx; font-size: 20rpx; color: #666; margin-right: 8rpx; margin-top: 4rpx;
+}
+
+/* 通用按钮 */
+.btn { display: flex; align-items: center; justify-content: center;
+  height: 88rpx; border-radius: 16rpx; font-size: 30rpx; font-weight: 600; }
+.btn-primary { background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%); color: #fff; }
+.btn-primary.disabled { background: #ccc; color: #fff; }
+.btn-ghost { background: #fff; color: #ff6b6b; border: 2rpx solid #ff6b6b; }
+
+.submit-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; padding: 24rpx;
+  background: #fff; box-shadow: 0 -4rpx 16rpx rgba(0,0,0,0.06);
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+}
+.tip-bar {
+  position: fixed; left: 0; right: 0; bottom: 130rpx; text-align: center;
+  font-size: 24rpx; color: #ff8e53;
+}
+
+.mt8 { margin-top: 8rpx; }
+.mt16 { margin-top: 16rpx; }
+.row { display: flex; align-items: center; }
+.row.wrap { flex-wrap: wrap; }

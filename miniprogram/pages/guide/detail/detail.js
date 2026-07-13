@@ -41,6 +41,7 @@ Page({
     this.setData({
       guide,
       fromAi: query.from === 'ai' || (guide && (guide.source === 'ai' || guide.source === 'raw')),
+      fromBuddy: query.from === 'buddy', // 从搭子详情跳来时露出"邀请搭子进空间"按钮
     });
     // 把每个节点已有的历史问答直接铺到下方（不再用弹幕）
     if (guide) {
@@ -181,6 +182,23 @@ Page({
         encodeURIComponent(name) +
         '&avatar=' +
         encodeURIComponent('🧭'),
+    });
+  },
+
+  // 邀请搭子进空间（从搭子帖跳来时显示）
+  onInviteBuddy() {
+    const g = this.data.guide;
+    if (!g) return;
+    wx.showModal({
+      title: '邀请搭子进空间',
+      content: `选择 1-2 位「${g.destination}」方向的搭子，按攻略「${g.title}」共建空间。`,
+      success: (r) => {
+        if (!r.confirm) return;
+        // 跳到搭子广场并预填目的地
+        wx.navigateTo({
+          url: '/pages/buddy/buddy?place=' + encodeURIComponent(g.destination) + '&guideId=' + g.id,
+        });
+      },
     });
   },
 

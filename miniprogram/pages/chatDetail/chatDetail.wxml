@@ -1,4 +1,27 @@
 <view class="chat-page">
+  <!-- 顶部：旅行空间卡片 -->
+  <view wx:if="{{space}}" class="space-card" bindtap="onOpenSpace">
+    <view class="sc-cover">{{space.cover}}</view>
+    <view class="sc-info">
+      <view class="sc-title">{{space.title}}</view>
+      <view class="sc-meta">{{space.destination}} · {{space.days}}天 · {{countdown}}</view>
+      <view class="sc-members">
+        <text class="sc-avatar" wx:for="{{space.members}}" wx:key="id" wx:for-item="m">{{m.avatar}}</text>
+        <text class="sc-edit">📝 共编 · 💰 旅帐</text>
+      </view>
+    </view>
+    <view class="sc-go">进入 ›</view>
+  </view>
+
+  <view wx:elif="{{!space}}" class="space-cta" bindtap="onCreateSpace">
+    <text class="sc-cta-icon">🏕️</text>
+    <view class="sc-cta-info">
+      <view class="sc-cta-title">建旅行空间</view>
+      <view class="sc-cta-sub">选攻略后所有成员可共编+记账</view>
+    </view>
+    <view class="sc-cta-go">+ 建空间</view>
+  </view>
+
   <scroll-view class="msg-list" scroll-y scroll-top="{{scrollTop}}" scroll-with-animation>
     <view class="msg-day">与 {{name}} 的对话</view>
     <view

@@ -526,6 +526,18 @@
   color: #ff5a7a;
   font-weight: 600;
 }
+
+/* 邀请搭子进空间 */
+.invite-space-bar {
+  display: flex; align-items: center;
+  padding: 20rpx 24rpx;
+  background: linear-gradient(135deg, #fe6b6b 0%, #ff8e53 100%);
+  color: #fff; border-radius: 16rpx;
+  box-shadow: 0 4rpx 12rpx rgba(254,107,107,0.25);
+}
+.isb-icon { font-size: 36rpx; margin-right: 12rpx; }
+.isb-text { flex: 1; font-size: 28rpx; font-weight: 600; }
+.isb-go { font-size: 26rpx; color: #fff; opacity: 0.9; }
 .raw-source-card {
   background: #fff;
   border: 2rpx solid #ffd1d8;

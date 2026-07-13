@@ -1,0 +1,155 @@
+<view class="container">
+  <!-- 头部空间信息 -->
+  <view wx:if="{{space}}" class="space-hero">
+    <view class="sh-cover">{{space.cover}}</view>
+    <view class="sh-info">
+      <view class="sh-title">{{space.title}}</view>
+      <view class="sh-meta">📍 {{space.destination}} · {{space.days}}天 · ¥{{space.budget}}</view>
+      <view class="sh-meta">🗓 {{space.travelDate}}</view>
+    </view>
+  </view>
+
+  <!-- tab 切换 -->
+  <view class="tabs">
+    <view class="tab {{tab === item.key ? 'on' : ''}}"
+          wx:for="{{tabs}}" wx:key="key"
+          data-tab="{{item.key}}" bindtap="onTab">{{item.label}}</view>
+  </view>
+
+  <!-- 行程共编 -->
+  <view wx:if="{{tab === 'plan'}}" class="tab-pane">
+    <view wx:if="{{!guide}}" class="empty">该空间还未绑定攻略</view>
+    <view wx:else>
+      <view wx:for="{{planNodes}}" wx:key="_idx" wx:for-item="n" class="plan-node card">
+        <view class="pn-day">Day {{n.day}}</view>
+        <view class="pn-title">{{n.title}}</view>
+        <view class="pn-loc">📍 {{n.location}} · ¥{{n.cost}}</view>
+        <view wx:if="{{editNodeIdx !== n._idx}}" class="pn-note" data-idx="{{n._idx}}" bindtap="onTapNode">
+          {{n.note || '点我编辑备注'}}
+        </view>
+        <view wx:else class="pn-edit">
+          <textarea class="pn-input" value="{{editNoteDraft}}" bindinput="onEditNoteInput" auto-height />
+          <view class="row mt8">
+            <view class="btn btn-ghost" bindtap="onCancelEdit">取消</view>
+            <view class="btn btn-primary ml8" bindtap="onSaveEdit">留痕保存</view>
+          </view>
+        </view>
+      </view>
+
+      <view wx:if="{{edits.length > 0}}" class="card edit-history">
+        <view class="eh-title">📜 共编留痕（{{edits.length}}）</view>
+        <view wx:for="{{edits}}" wx:key="id" class="eh-item">
+          <view class="eh-time">{{item.time}}</view>
+          <view class="eh-content">
+            Day {{planNodes[item.nodeIdx].day}} · {{planNodes[item.nodeIdx].title}}
+          </view>
+          <view class="eh-diff">-{{item.oldVal || '（空）'}}</view>
+          <view class="eh-diff plus">+{{item.newVal}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 旅帐差额AA -->
+  <view wx:elif="{{tab === 'ledger'}}" class="tab-pane">
+    <view class="card">
+      <view class="sec-title">💸 净转账（最少笔数）</view>
+      <view wx:if="{{settlements.length === 0}}" class="empty">账目已结清，无需转账 ✨</view>
+      <view wx:for="{{settlements}}" wx:key="idx" wx:for-item="s" class="settle-row">
+        <text class="sr-from">{{s.fromName}}</text>
+        <text class="sr-arrow"> → 转 ¥{{s.amount}} → </text>
+        <text class="sr-to">{{s.toName}}</text>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="sec-title">📊 成员余额</view>
+      <view wx:for="{{memberStats}}" wx:key="id" wx:for-item="m" class="stat-row">
+        <text class="stat-avatar">{{m.avatar}}</text>
+        <text class="stat-name">{{m.nickname}}</text>
+        <text class="stat-paid">已付 ¥{{m.paid}}</text>
+        <text class="stat-share">应付 ¥{{m.share}}</text>
+        <text class="stat-net {{m.net > 0 ? 'pos' : m.net < 0 ? 'neg' : 'zero'}}">
+          {{m.net > 0 ? '+' : ''}}{{m.net}}
+        </text>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="sec-title">📒 账目明细</view>
+      <view wx:if="{{ledger.length === 0}}" class="empty">还没有账目，点下方「记一笔」开始</view>
+      <view wx:for="{{ledger}}" wx:key="id" wx:for-item="e" class="ledger-row">
+        <view class="lr-left">
+          <text class="lr-cat">{{e.category}}</text>
+          <text class="lr-title">{{e.title}}</text>
+          <text class="lr-meta">{{e.date}} · {{e.splits.length}}人平摊</text>
+        </view>
+        <view class="lr-right">
+          <text class="lr-amount">¥{{e.amount}}</text>
+          <text class="lr-payer">{{_memberName(e.payerId)}} 付</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="fab-mini" bindtap="onShowAddLedger">+ 记一笔</view>
+  </view>
+
+  <!-- 成员 -->
+  <view wx:elif="{{tab === 'members'}}" class="tab-pane">
+    <view class="card">
+      <view class="sec-title">👥 同行搭子（{{members.length}}）</view>
+      <view wx:for="{{members}}" wx:key="id" wx:for-item="m" class="member-row">
+        <view class="m-avatar-lg">{{m.avatar}}</view>
+        <view class="m-info">
+          <view class="m-name">{{m.nickname}} <text wx:if="{{m.id === 'u1'}}" class="m-me">我</text></view>
+          <view class="m-tags">
+            <text class="m-tag" wx:for="{{m.tags}}" wx:key="*this" wx:for-item="t">{{t}}</text>
+          </view>
+          <view class="m-meta">🛫 过往出行 {{m.pastTrips}} 次</view>
+        </view>
+        <view class="m-credit">
+          <view class="mc-score">{{m.creditScore}}</view>
+          <view class="mc-label">信用</view>
+        </view>
+      </view>
+      <view class="btn btn-ghost mt16" bindtap="onInviteMember">+ 邀请搭子加入</view>
+    </view>
+  </view>
+
+  <!-- 新增账目弹层 -->
+  <view wx:if="{{showAddLedger}}" class="modal-mask" bindtap="onCloseAddLedger">
+    <view class="modal-body" catchtap="">
+      <view class="modal-title">记一笔</view>
+
+      <view class="form-row">
+        <text class="form-label">📝 项目</text>
+        <input class="form-input" data-field="title" value="{{newLedger.title}}" bindinput="onLedgerInput" placeholder="如：包车费" />
+      </view>
+      <view class="form-row">
+        <text class="form-label">💰 金额</text>
+        <input class="form-input" data-field="amount" type="digit" value="{{newLedger.amount}}" bindinput="onLedgerInput" placeholder="¥" />
+      </view>
+      <view class="form-row">
+        <text class="form-label">🏷 类别</text>
+        <picker range="{{categories}}" range-key="key" value="0" bindchange="onLedgerCategory">
+          <view class="picker">{{newLedger.category}} ▾</view>
+        </picker>
+      </view>
+      <view class="form-row">
+        <text class="form-label">💳 付款人</text>
+        <picker range="{{space.members}}" range-key="nickname" value="0" bindchange="onLedgerPayer">
+          <view class="picker">{{_memberName(newLedger.payerId)}} ▾</view>
+        </picker>
+      </view>
+      <view class="form-row">
+        <text class="form-label">👥 分摊</text>
+        <view class="split-row">
+          <text class="split-chip {{newLedger.splits.indexOf(item.id) >= 0 ? 'on' : ''}}"
+                wx:for="{{space.members}}" wx:key="id" wx:for-item="m"
+                data-id="{{item.id}}" bindtap="onToggleSplit">{{m.nickname}}</text>
+        </view>
+      </view>
+      <view class="btn btn-primary mt16" bindtap="onSaveLedger">保存</view>
+    </view>
+  </view>
+</view>

@@ -626,6 +626,42 @@ const jdTravel = {
     { id: 'h10', name: '明洞宜必思酒店(地铁口)', city: '韩国·首尔', score: 4.6, price: 520, origin: 680, bean: 52, tag: 'AREX直达免税店', img: '🏨' },
     { id: 'h11', name: '济州新罗海景度假村', city: '韩国·济州', score: 4.8, price: 780, origin: 980, bean: 78, tag: '城山日出峰步行可达', img: '🌊' },
   ],
+  restaurants: [
+    // 稻城/亚丁
+    { id: 'r1', name: '稻城老院子藏餐吧', city: '四川·稻城', score: 4.7, price: 68, tag: '牦牛肉汤锅', feature: '本地人常去·份量大', img: '🍲' },
+    { id: 'r2', name: '亚丁村藏家风味', city: '四川·稻城', score: 4.5, price: 55, tag: '酥油茶+糌粑', feature: '景区门口步行5分', img: '🍵' },
+    { id: 'r3', name: '稻城阳光烧烤夜市', city: '四川·稻城', score: 4.3, price: 45, tag: '烤全羊·撸串', feature: '夜宵首选·人均40+', img: '🍢' },
+    // 康定
+    { id: 'r4', name: '康定情歌石锅鱼', city: '四川·康定', score: 4.6, price: 78, tag: '石锅鱼·野生菌', feature: '情歌广场旁·步行3分', img: '🐟' },
+    { id: 'r5', name: '康定牦牛面馆', city: '四川·康定', score: 4.4, price: 25, tag: '牦牛肉面', feature: '早午餐首选·15元起', img: '🍜' },
+    // 色达
+    { id: 'r6', name: '色达县城川菜馆', city: '四川·色达', score: 4.3, price: 50, tag: '川菜家常', feature: '县城主街·性价比高', img: '🥘' },
+    // 新都桥
+    { id: 'r7', name: '新都桥摄影之家餐厅', city: '四川·新都桥', score: 4.5, price: 60, tag: '牦牛汤锅', feature: '客栈楼下·暖身必备', img: '🫕' },
+    // 成都
+    { id: 'r8', name: '宽窄巷子小龙坎火锅', city: '四川·成都', score: 4.8, price: 98, tag: '四川火锅', feature: '宽窄巷子步行5分', img: '🌶️' },
+    { id: 'r9', name: '春熙路龙抄手总店', city: '四川·成都', score: 4.6, price: 42, tag: '龙抄手·钟水饺', feature: '百年老字号', img: '🥟' },
+    // 日本·京都
+    { id: 'r10', name: '锦市场·藤野割烹', city: '日本·京都', score: 4.7, price: 180, tag: '京料理·怀石', feature: '锦市场内·预约制', img: '🍱' },
+    { id: 'r11', name: '祇園豆腐料理�的', city: '日本·京都', score: 4.5, price: 120, tag: '汤豆腐·抹茶甜品', feature: '花见小路旁', img: '🍵' },
+    // 日本·东京
+    { id: 'r12', name: '筑地寿司大', city: '日本·东京', score: 4.9, price: 200, tag: '寿司·海鲜丼', feature: '丰洲市场排队名店', img: '🍣' },
+    // 泰国·清迈
+    { id: 'r13', name: '凤飞飞猪脚饭', city: '泰国·清迈', score: 4.6, price: 15, tag: '猪脚饭', feature: '清迈大学门口·必吃', img: '🐷' },
+    { id: 'r14', name: 'Huen Muan Jai 北泰菜', city: '泰国·清迈', score: 4.7, price: 60, tag: '北泰咖喱·Khao Soi', feature: '宁曼路附近·本地人也爱', img: '🍛' },
+    // 云南·大理
+    { id: 'r15', name: '大理古城段公子饵丝', city: '云南·大理', score: 4.5, price: 22, tag: '饵丝·米线', feature: '人民路老店·早市排队', img: '🍜' },
+    // 云南·丽江
+    { id: 'r16', name: '阿婆腊排骨火锅', city: '云南·丽江', score: 4.7, price: 88, tag: '腊排骨火锅', feature: '束河古镇必吃·2人起', img: '🍖' },
+    // 韩国·首尔
+    { id: 'r17', name: '明洞神仙雪浓汤', city: '韩国·首尔', score: 4.5, price: 65, tag: '雪浓汤·牛骨汤', feature: '明洞主街·24h', img: '🥣' },
+    // 韩国·济州
+    { id: 'r18', name: '济州黑猪肉一条街', city: '韩国·济州', score: 4.6, price: 120, tag: '黑猪肉烤肉', feature: '旧济州市区·人均120', img: '🥩' },
+    // 福建·厦门
+    { id: 'r19', name: '沙坡尾海鲜大排档', city: '福建·厦门', score: 4.5, price: 95, tag: '海鲜·沙茶面', feature: '沙坡尾文艺区旁', img: '🦐' },
+    // 通用/返程
+    { id: 'r20', name: '当地特色美食街', city: '通用', score: 4.3, price: 50, tag: '综合小吃', feature: '每城都有·大众点评搜', img: '🏪' },
+  ],
   flights: [
     { id: 'f1', from: '北京', to: '成都', date: '10-01', price: 780, tag: '低价预警', img: '✈️' },
     { id: 'f2', from: '上海', to: '大阪', date: '03-28', price: 1650, tag: '樱花季直飞', img: '✈️' },

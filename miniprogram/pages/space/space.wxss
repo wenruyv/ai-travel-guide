@@ -236,3 +236,25 @@
   font-size: 26rpx; margin-right: 16rpx; }
 .ai-send { background: linear-gradient(135deg, #6a82fb 0%, #7c3aed 100%); color: #fff;
   padding: 16rpx 28rpx; border-radius: 100rpx; font-size: 26rpx; font-weight: 600; }
+
+/* ===== 按天推荐 ===== */
+.day-rec-block { margin-top: 20rpx; padding: 16rpx 0; border-top: 1rpx solid #f0f1f5; }
+.day-rec-block:first-of-type { border-top: none; margin-top: 0; }
+.day-rec-title { display: inline-block; padding: 4rpx 20rpx; background: linear-gradient(135deg, #fe6b6b 0%, #ff8e53 100%);
+  color: #fff; font-size: 24rpx; font-weight: 700; border-radius: 8rpx; margin-bottom: 16rpx; }
+.day-rec-section { margin-top: 16rpx; }
+.day-rec-label { font-size: 26rpx; font-weight: 600; color: #444; margin-bottom: 8rpx; }
+.day-rec-empty { font-size: 24rpx; color: #999; padding: 12rpx 0; }
+
+/* 饭店卡片 */
+.rest-card { display: flex; align-items: center; gap: 14rpx; padding: 16rpx 0; border-top: 1rpx solid #f0f1f5; }
+.rest-emoji { width: 72rpx; height: 72rpx; border-radius: 12rpx; background: #fff7f0;
+  font-size: 40rpx; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.rest-info { flex: 1; min-width: 0; }
+.rest-name { font-size: 28rpx; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rest-tag { display: inline-block; font-size: 22rpx; color: #e6871e; background: #fff7f0;
+  border-radius: 6rpx; padding: 2rpx 12rpx; }
+.rest-action { text-align: right; flex-shrink: 0; }
+.rest-price { color: #e6871e; font-size: 26rpx; font-weight: 700; }
+.look-btn { margin-top: 6rpx; background: #fff7f0; color: #e6871e; border: 1rpx solid #f5d5b0;
+  border-radius: 100rpx; padding: 6rpx 22rpx; font-size: 22rpx; }

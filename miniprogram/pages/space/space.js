@@ -48,8 +48,8 @@ Page({
     ledger: [],        // 当前 space 的账目
     settlements: [],   // 净转账结果
     memberStats: [],   // 成员累计付/应付/净转
+    dayRecs: [],
     gears: [],
-    recHotels: [],
     // AI 助手
     aiVisible: false,
     aiInput: '',
@@ -286,8 +286,9 @@ Page({
     wx.showToast({ title: '分享给搭子(开发中)', icon: 'none' });
   },
 
-  // ===== 攻略推荐 =====
+  // ===== 攻略推荐（按天推荐酒店+饭店，末尾推荐装备） =====
   buildRecommend(guide) {
+    // 1. 装备推荐（基于攻略标签）
     const gearMap = mock.gearByTag || {};
     const seen = {};
     const gears = [];
@@ -296,11 +297,60 @@ Page({
         if (!seen[g.id]) { seen[g.id] = 1; gears.push(g); }
       });
     });
-    const kw = (guide.destination || '').split('·').pop();
-    const hotels = (mock.jdTravel.hotels || []).filter(
-      (h) => h.city.indexOf(kw) > -1 || (guide.destination || '').indexOf(h.city.split('·').pop()) > -1
-    );
-    this.setData({ gears, recHotels: hotels });
+
+    // 2. 按天推荐酒店+饭店（基于planNodes，不是静态guide.destination）
+    const planNodes = this.data.planNodes || [];
+    const hotels = mock.jdTravel.hotels || [];
+    const restaurants = mock.jdTravel.restaurants || [];
+
+    // 按day分组，提取每天的关键词
+    const dayMap = {};
+    planNodes.forEach((n) => {
+      const d = n.day;
+      if (!dayMap[d]) dayMap[d] = { day: d, keywords: new Set() };
+      // 从location提取关键词（如"理塘·稻城"→["理塘","稻城"]）
+      if (n.location) {
+        n.location.split(/[·\-/,、\s]+/).forEach((kw) => {
+          if (kw.length >= 2) dayMap[d].keywords.add(kw);
+        });
+      }
+      // 从accommodation提取关键词（如"稻城阳光酒店"→["稻城"]）
+      if (n.accommodation && n.accommodation !== '-') {
+        n.accommodation.split(/[\s,，、]+/).forEach((w) => {
+          // 提取2-3字地名关键词
+          const m = w.match(/^([\u4e00-\u9fa5]{2,4})/);
+          if (m) dayMap[d].keywords.add(m[1]);
+        });
+      }
+    });
+
+    // 生成按天推荐
+    const dayRecs = [];
+    const sortedDays = Object.keys(dayMap).map(Number).sort((a, b) => a - b);
+    for (const d of sortedDays) {
+      const info = dayMap[d];
+      const kws = [...info.keywords];
+
+      // 匹配酒店：hotel.city含任一关键词
+      const dayHotels = hotels.filter((h) => {
+        const cityKw = h.city.split('·').pop(); // "四川·稻城"→"稻城"
+        return kws.some((kw) => cityKw.indexOf(kw) > -1 || kw.indexOf(cityKw) > -1);
+      });
+
+      // 匹配饭店：restaurant.city含任一关键词
+      const dayRests = restaurants.filter((r) => {
+        if (r.city === '通用') return dayHotels.length === 0; // 无匹配时兜底
+        const cityKw = r.city.split('·').pop();
+        return kws.some((kw) => cityKw.indexOf(kw) > -1 || kw.indexOf(cityKw) > -1);
+      });
+
+      // 跳过无推荐的天（如返程）
+      if (dayHotels.length > 0 || dayRests.length > 0) {
+        dayRecs.push({ day: d, hotels: dayHotels, restaurants: dayRests });
+      }
+    }
+
+    this.setData({ gears, dayRecs });
   },
 
   onOpenGuide() {

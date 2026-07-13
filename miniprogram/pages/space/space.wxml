@@ -90,29 +90,74 @@
         </view>
       </view>
 
-      <!-- 京东酒旅推荐 -->
-      <view class="card jd-block" wx:if="{{recHotels.length}}">
+      <!-- 每日住宿·餐饮推荐（按行程节点智能匹配） -->
+      <view class="card jd-block" wx:if="{{dayRecs.length}}">
         <view class="row between">
-          <text class="sec-title">🏨 跟着攻略订同款</text>
+          <text class="sec-title">🏨 每日住宿·餐饮推荐</text>
           <text class="jd-more">京东酒旅 ›</text>
         </view>
-        <view class="hotel-card" wx:for="{{recHotels}}" wx:key="id">
-          <view class="hotel-img">{{item.img}}</view>
-          <view class="hotel-info">
-            <view class="hotel-name">{{item.name}}</view>
-            <view class="row subtitle mt8">
-              <text>⭐{{item.score}}</text><text class="dot">·</text><text>{{item.city}}</text>
+        <view class="jd-tip mt8">根据你的行程，智能推荐每天可能住的酒店和吃的饭店</view>
+        <view wx:for="{{dayRecs}}" wx:key="day" class="day-rec-block">
+          <view class="day-rec-title">Day {{item.day}}</view>
+
+          <!-- 住宿推荐 -->
+          <view wx:if="{{item.hotels.length}}" class="day-rec-section">
+            <view class="day-rec-label">🏨 推荐住宿</view>
+            <view class="hotel-card" wx:for="{{item.hotels}}" wx:key="id" wx:for-item="h">
+              <view class="hotel-img">{{h.img}}</view>
+              <view class="hotel-info">
+                <view class="hotel-name">{{h.name}}</view>
+                <view class="row subtitle mt8">
+                  <text>⭐{{h.score}}</text><text class="dot">·</text><text>{{h.city}}</text>
+                </view>
+                <view class="hotel-tag mt8">{{h.tag}} · 返{{h.bean}}京豆</view>
+              </view>
+              <view class="hotel-buy">
+                <view class="hotel-price">¥{{h.price}}<text class="hotel-origin">¥{{h.origin}}</text></view>
+                <view class="buy-btn" data-name="{{h.name}}" bindtap="onBookHotel">预订</view>
+              </view>
             </view>
-            <view class="hotel-tag mt8">{{item.tag}} · 返{{item.bean}}京豆</view>
           </view>
-          <view class="hotel-buy">
-            <view class="hotel-price">¥{{item.price}}<text class="hotel-origin">¥{{item.origin}}</text></view>
-            <view class="buy-btn" data-name="{{item.name}}" bindtap="onBookHotel">预订</view>
+
+          <!-- 餐饮推荐 -->
+          <view wx:if="{{item.restaurants.length}}" class="day-rec-section">
+            <view class="day-rec-label">🍽️ 推荐餐饮</view>
+            <view class="rest-card" wx:for="{{item.restaurants}}" wx:key="id" wx:for-item="r">
+              <view class="rest-emoji">{{r.img}}</view>
+              <view class="rest-info">
+                <view class="rest-name">{{r.name}}</view>
+                <view class="row subtitle mt4">
+                  <text>⭐{{r.score}}</text><text class="dot">·</text><text>人均¥{{r.price}}</text>
+                </view>
+                <view class="rest-tag mt4">{{r.tag}} · {{r.feature}}</view>
+              </view>
+              <view class="rest-action">
+                <view class="rest-price">¥{{r.price}}/人</view>
+                <view class="look-btn" data-name="{{r.name}}" bindtap="onBookHotel">看看</view>
+              </view>
+            </view>
+          </view>
+
+          <view wx:if="{{item.hotels.length === 0 && item.restaurants.length === 0}}" class="day-rec-empty">
+            暂无匹配推荐，可向 AI 助手咨询
           </view>
         </view>
       </view>
 
-      <!-- 行前装备种草 -->
+      <!-- 共编留痕时间线 -->
+      <view wx:if="{{edits.length > 0}}" class="card edit-history">
+        <view class="eh-title">📜 共编留痕（{{edits.length}}）</view>
+        <view wx:for="{{edits}}" wx:key="id" class="eh-item">
+          <view class="eh-time">{{item.time}}</view>
+          <view class="eh-content">
+            Day {{planNodes[item.nodeIdx].day}} · {{planNodes[item.nodeIdx].title}}
+          </view>
+          <view class="eh-diff">-{{item.oldVal || '（空）'}}</view>
+          <view class="eh-diff plus">+{{item.newVal}}</view>
+        </view>
+      </view>
+
+      <!-- 行前装备清单（放在最后） -->
       <view class="card jd-block" wx:if="{{gears.length}}">
         <view class="row between">
           <text class="sec-title">🎒 行前装备清单</text>
@@ -129,19 +174,6 @@
               <view class="cart-btn" data-name="{{item.name}}" bindtap="onAddCart">+ 加购</view>
             </view>
           </view>
-        </view>
-      </view>
-
-      <!-- 共编留痕时间线 -->
-      <view wx:if="{{edits.length > 0}}" class="card edit-history">
-        <view class="eh-title">📜 共编留痕（{{edits.length}}）</view>
-        <view wx:for="{{edits}}" wx:key="id" class="eh-item">
-          <view class="eh-time">{{item.time}}</view>
-          <view class="eh-content">
-            Day {{planNodes[item.nodeIdx].day}} · {{planNodes[item.nodeIdx].title}}
-          </view>
-          <view class="eh-diff">-{{item.oldVal || '（空）'}}</view>
-          <view class="eh-diff plus">+{{item.newVal}}</view>
         </view>
       </view>
     </view>

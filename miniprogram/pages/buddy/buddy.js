@@ -12,7 +12,29 @@ Page({
     budgetIndex: 0,
   },
   onLoad() {
-    this.setData({ all: mock.buddies, list: mock.buddies });
+    // 给每个搭子预计算攻略摘要字段（封面/标题/目的地/天数）
+    const enriched = (mock.buddies || []).map((b) => {
+      const g = b.guideId ? mock.guides.find((x) => x.id === b.guideId) : null;
+      return {
+        ...b,
+        guideCover: g ? g.cover : '',
+        guideTitle: g ? g.title : '',
+        guideDestination: g ? g.destination : '',
+        guideDays: g ? g.days : 0,
+      };
+    });
+    this.setData({ all: enriched, list: enriched });
+  },
+  // 跳转到攻略详情（带 from=buddy，让攻略页显示「邀请搭子」入口）
+  onOpenGuide(e) {
+    const gid = e.currentTarget.dataset.gid;
+    if (!gid) return;
+    wx.navigateTo({ url: '/pages/guide/detail/detail?id=' + gid + '&from=buddy' });
+  },
+  // 未选攻略的搭子：跳到 postBuddy 让用户帮选一份
+  onPickGuide(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.navigateTo({ url: '/pages/postBuddy/postBuddy?pickGuideFor=' + id });
   },
   onPlaceInput(e) {
     this.setData({ 'filters.place': e.detail.value });

@@ -10,6 +10,68 @@
   color: #222;
 }
 
+.bill-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 24rpx 16rpx;
+  padding: 24rpx 28rpx;
+  background: linear-gradient(135deg, #ff8e53 0%, #ff6b3d 100%);
+  border-radius: 20rpx;
+  color: #fff;
+  box-shadow: 0 6rpx 18rpx rgba(255, 110, 60, 0.25);
+}
+.bh-left {
+  display: flex;
+  align-items: center;
+}
+.bh-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+}
+.bh-info {
+  margin-left: 18rpx;
+}
+.bh-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  letter-spacing: 1rpx;
+}
+.bh-sub {
+  font-size: 22rpx;
+  opacity: 0.86;
+  margin-top: 4rpx;
+}
+.bh-right {
+  text-align: right;
+}
+.bh-amount {
+  font-size: 36rpx;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+}
+.bh-amount.bh-pos {
+  color: #fff;
+}
+.bh-amount.bh-neg {
+  color: #fff5b1;
+}
+.bh-amount.bh-neutral {
+  color: #fff;
+  opacity: 0.9;
+}
+.bh-tip {
+  font-size: 22rpx;
+  opacity: 0.88;
+  margin-top: 4rpx;
+}
+
 .cl-empty {
   margin: 120rpx 40rpx;
   text-align: center;

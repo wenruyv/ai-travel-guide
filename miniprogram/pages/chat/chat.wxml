@@ -1,6 +1,21 @@
 <view class="chat-list-page">
   <view class="cl-header">消息</view>
 
+  <!-- 我的旅账入口：未结账/总余额/总笔数 -->
+  <view class="bill-hero" bindtap="onOpenBill">
+    <view class="bh-left">
+      <view class="bh-icon">💰</view>
+      <view class="bh-info">
+        <view class="bh-title">我的旅账</view>
+        <view class="bh-sub">{{billSummary.subTitle}}</view>
+      </view>
+    </view>
+    <view class="bh-right">
+      <view class="bh-amount {{billSummary.netClass}}">¥{{billSummary.netAmount}}</view>
+      <view class="bh-tip">{{billSummary.tipText}} ›</view>
+    </view>
+  </view>
+
   <view wx:if="{{conversations.length === 0}}" class="cl-empty">
     还没有会话，去攻略或搭子页发起私聊吧～
   </view>

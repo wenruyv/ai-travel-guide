@@ -52,6 +52,72 @@
   color: #555;
   line-height: 1.5;
 }
+.guide-card {
+  display: flex;
+  align-items: center;
+  margin-top: 20rpx;
+  padding: 18rpx 20rpx;
+  background: linear-gradient(135deg, #fff7f0 0%, #ffe9d9 100%);
+  border: 1rpx solid #ffd6b3;
+  border-radius: 16rpx;
+}
+.guide-card-empty {
+  background: #fafbfc;
+  border: 1rpx dashed #c8d0dc;
+}
+.gc-cover {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 16rpx;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  flex-shrink: 0;
+}
+.gc-cover-empty {
+  background: #eef3fd;
+  color: #2f80ed;
+  font-size: 48rpx;
+  font-weight: 600;
+}
+.gc-info {
+  flex: 1;
+  margin-left: 18rpx;
+  overflow: hidden;
+}
+.gc-label {
+  font-size: 20rpx;
+  color: #ff8e53;
+  letter-spacing: 1rpx;
+}
+.gc-title {
+  margin-top: 6rpx;
+  font-size: 28rpx;
+  color: #222;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gc-meta {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: #8a8a8a;
+}
+.gc-go {
+  font-size: 24rpx;
+  color: #ff8e53;
+  font-weight: 600;
+  margin-left: 12rpx;
+}
+.guide-card-empty .gc-go {
+  color: #2f80ed;
+}
+.guide-card-empty .gc-label {
+  color: #8a8a8a;
+}
 .guide-hint {
   font-size: 22rpx;
   color: #ff8e53;

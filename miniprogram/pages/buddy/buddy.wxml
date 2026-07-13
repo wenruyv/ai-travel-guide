@@ -40,8 +40,26 @@
       <text class="tag" wx:for="{{item.interests}}" wx:for-item="it" wx:key="*this">{{it}}</text>
     </view>
     <view class="intro mt16">{{item.intro}}</view>
+    <!-- 已选攻略：封面+标题+天数，点击进入攻略详情 -->
+    <view wx:if="{{item.guideId}}" class="guide-card" data-gid="{{item.guideId}}" bindtap="onOpenGuide">
+      <view class="gc-cover">{{item.guideCover || '🗺️'}}</view>
+      <view class="gc-info">
+        <view class="gc-label">已选攻略</view>
+        <view class="gc-title">{{item.guideTitle || '查看攻略'}}</view>
+        <view class="gc-meta">{{item.guideDestination || item.destination}} · {{item.guideDays || 0}}天</view>
+      </view>
+      <view class="gc-go">查看 ›</view>
+    </view>
+    <view wx:else class="guide-card guide-card-empty" data-id="{{item.id}}" bindtap="onPickGuide">
+      <view class="gc-cover gc-cover-empty">＋</view>
+      <view class="gc-info">
+        <view class="gc-label">未选攻略</view>
+        <view class="gc-title">帮他挑一份攻略</view>
+        <view class="gc-meta">挑完即可拼成同行</view>
+      </view>
+      <view class="gc-go">去选 ›</view>
+    </view>
     <view class="btn btn-ghost mt16" data-name="{{item.nickname}}" data-id="{{item.id}}" data-avatar="{{item.avatar}}" data-dest="{{item.destination}}" bindtap="onInvite">🤝 拼成同行</view>
-    <view wx:if="{{item.guideId}}" class="guide-hint">📑 已选攻略：点击「拼成」即建空间</view>
   </view>
 
   <view wx:if="{{list.length === 0}}" class="empty">暂无匹配搭子，放宽条件试试~</view>

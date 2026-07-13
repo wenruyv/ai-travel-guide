@@ -84,6 +84,9 @@ Page({
     generating: false,
     thinkText: '',
     thinkPercent: 0,
+    // 相似攻略候选
+    similarVisible: false,
+    similarList: [],
   },
 
   onShow() {
@@ -172,6 +175,113 @@ Page({
 
   goGuideList() {
     wx.switchTab({ url: '/pages/guide/list/list' });
+  },
+
+  // ===== 找相似攻略（与 AI 一键生成并列）=====
+
+  /**
+   * 综合打分：基于 form 多维度匹配攻略库，返回 Top N
+   * 维度：目的地(40) + 标签命中(25) + 天数差距(15) + 预算档(10) + 同行人/节奏(10)
+   */
+  matchSimilarGuides(form) {
+    const f = form || this.data.form;
+    const dest = (f.destination || '').trim();
+    const firstWord = dest.split(/\s|·/)[0];
+    const dayGap = Math.abs; // alias
+
+    // 预算档：把 form 档位折成数字上限
+    const budgetMap = { '¥3000 以下': 3000, '¥3000-8000': 8000, '¥8000-15000': 15000, '¥15000+': 30000 };
+    const userBudget = budgetMap[f.budgetLevel] || 8000;
+
+    const scored = (mock.guides || [])
+      .filter((g) => g && (g.id || g.rawTitle)) // 排除明显空数据
+      .map((g) => {
+        let score = 0;
+        const hits = [];
+        const gDest = g.destination || '';
+        // 1) 目的地匹配（40 分）
+        if (dest && gDest && (dest.includes(gDest) || gDest.includes(dest) || (firstWord && gDest.includes(firstWord)))) {
+          score += 40;
+          hits.push('目的地一致');
+        } else if (dest && gDest && (gDest.split(/·/)[0] === dest.split(/·/)[0])) {
+          score += 18; // 同省
+          hits.push('同省份');
+        }
+        // 2) 标签命中（25 分，每个 +8，封顶 25）
+        const tagHits = (g.tags || []).filter((t) => (f.preferences || []).includes(t));
+        if (tagHits.length) {
+          score += Math.min(25, tagHits.length * 8);
+          tagHits.forEach((t) => hits.push(t));
+        }
+        // 3) 天数差距（15 分：差距 ≤1 得满分，2 得 10，3 得 6，4+ 得 0）
+        if (g.days) {
+          const diff = dayGap((g.days || 0) - (f.days || 0));
+          if (diff <= 1) { score += 15; hits.push('天数相近'); }
+          else if (diff <= 2) score += 10;
+          else if (diff <= 3) score += 6;
+        }
+        // 4) 预算档（10 分：同档 +10，相邻档 +5）
+        if (g.budget) {
+          const ratio = g.budget / Math.max(userBudget, 1);
+          if (ratio >= 0.6 && ratio <= 1.5) { score += 10; hits.push('预算契合'); }
+          else if (ratio >= 0.3 && ratio <= 2.5) score += 5;
+        }
+        // 5) 节奏/同行人暗示（10 分：从 tags/title 推断）
+        const tagText = ((g.tags || []).join(',') + ',' + (g.title || '')).toLowerCase();
+        if (f.people === '亲子' && /亲子|小孩|家庭/.test(tagText)) { score += 6; hits.push('适合亲子'); }
+        if (f.people === '情侣' && /情侣|浪漫|二人/.test(tagText)) { score += 5; hits.push('适合情侣'); }
+        if (f.pace === '特种兵打卡' && /打卡|紧凑|多景点/.test(tagText)) { score += 4; }
+        if (f.pace === '深度漫游' && /深度|漫游|慢游/.test(tagText)) { score += 4; hits.push('节奏匹配'); }
+        // 来源标记
+        const source = g.rawTitle ? 'raw' : g.source || 'local';
+        return Object.assign({}, g, {
+          score: Math.min(100, score),
+          hits: hits.slice(0, 3), // 最多展示 3 个命中点
+          source,
+          cover: g.cover || (g.rawTitle ? '📥' : '✈️'),
+        });
+      })
+      .filter((g) => g.score > 0) // 没命中的不要
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 4); // 最多 4 张候选
+
+    return scored;
+  },
+
+  // 点击"找相似攻略"
+  onFindSimilar() {
+    if (this.data.generating) return;
+    const f = this.data.form;
+    if (!f.destination.trim()) {
+      wx.showToast({ title: '先告诉我去哪儿玩～', icon: 'none' });
+      return;
+    }
+    const list = this.matchSimilarGuides(f);
+    this.setData({ similarVisible: true, similarList: list });
+    if (!list.length) {
+      wx.showToast({ title: '攻略库没相似的，可让 AI 现编', icon: 'none' });
+    } else {
+      wx.pageScrollTo({ selector: '.similar-block', duration: 200 });
+    }
+  },
+
+  // 点开某条相似候选 → 跳详情
+  onPickSimilar(e) {
+    const g = e.currentTarget.dataset.g;
+    if (!g || !g.id) return;
+    // raw 笔记需要先解析
+    const cache = loadCache();
+    if (g.rawTitle && (!cache[g.id] || !cache[g.id].nodes)) {
+      const parsed = mock.parseRawGuide(g);
+      cache[g.id] = Object.assign({}, g, { nodes: parsed });
+      saveCache(cache);
+    }
+    wx.navigateTo({ url: '/pages/guide/detail/detail?id=' + g.id + '&from=ai' });
+  },
+
+  // 收起相似候选
+  onClearSimilar() {
+    this.setData({ similarVisible: false });
   },
 
   onOpenHistory(e) {

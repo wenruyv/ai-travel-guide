@@ -98,10 +98,45 @@
     </view>
   </view>
 
-  <!-- 生成按钮 -->
+  <!-- 找相似攻略：基于表单多维匹配出的候选（默认隐藏） -->
+  <view class="block similar-block" wx:if="{{similarVisible}}">
+    <view class="row between block-title">
+      <text>🧩 相似攻略候选 · 按你的条件匹配</text>
+      <text class="link" bindtap="onClearSimilar">收起 ✕</text>
+    </view>
+    <view class="similar-tip subtitle">从本地攻略库 + 社区笔记中挑出的 {{similarList.length}} 篇，没合适的再让 AI 现编</view>
+    <view
+      class="sim-card"
+      wx:for="{{similarList}}"
+      wx:key="id"
+      data-g="{{item}}"
+      bindtap="onPickSimilar"
+    >
+      <view class="sim-cover">{{item.cover}}</view>
+      <view class="sim-mid">
+        <view class="sim-title">{{item.title}}</view>
+        <view class="sim-meta">📍{{item.destination}} · {{item.days}}天 · 预算¥{{item.budget}}</view>
+        <view class="sim-hit">
+          <text class="sim-score">匹配度 {{item.score}}%</text>
+          <text class="sim-chip" wx:for="{{item.hits}}" wx:for-item="h" wx:key="*this">{{h}}</text>
+        </view>
+      </view>
+      <text class="sim-arrow">›</text>
+    </view>
+    <view wx:if="{{!similarList.length}}" class="similar-empty">
+      没有命中相似的攻略，要不<text class="link" bindtap="onGenerate">让 AI 现编一篇</text>？
+    </view>
+  </view>
+
+  <!-- 双按钮：AI 生成 + 找相似 -->
   <view class="gen-bar">
-    <view class="gen-btn {{generating ? 'disabled' : ''}}" bindtap="onGenerate">
-      {{generating ? 'AI 生成中…' : '🤖 AI 一键生成攻略'}}
+    <view class="gen-btn-row">
+      <view class="gen-btn primary {{generating ? 'disabled' : ''}}" bindtap="onGenerate">
+        {{generating ? 'AI 生成中…' : '🤖 AI 一键生成'}}
+      </view>
+      <view class="gen-btn ghost {{generating ? 'disabled' : ''}}" bindtap="onFindSimilar">
+        🧩 找相似攻略
+      </view>
     </view>
   </view>
 

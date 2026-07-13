@@ -165,7 +165,7 @@
   font-weight: 500;
 }
 
-/* 生成按钮 */
+/* 生成按钮：双按钮布局 */
 .gen-bar {
   position: fixed;
   left: 0;
@@ -175,18 +175,117 @@
   background: #fff;
   box-shadow: 0 -4rpx 20rpx rgba(0,0,0,0.05);
 }
+.gen-btn-row {
+  display: flex;
+  gap: 16rpx;
+}
 .gen-btn {
-  background: linear-gradient(135deg, #5b6ee8, #7c3aed);
-  color: #fff;
-  font-size: 32rpx;
-  font-weight: 600;
+  flex: 1;
   text-align: center;
   height: 96rpx;
   line-height: 96rpx;
   border-radius: 48rpx;
-  letter-spacing: 2rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  letter-spacing: 1rpx;
+}
+.gen-btn.primary {
+  background: linear-gradient(135deg, #5b6ee8, #7c3aed);
+  color: #fff;
+  flex: 1.4; /* 主按钮稍宽，强化"AI 兜底"心智 */
+}
+.gen-btn.ghost {
+  background: #f0f3ff;
+  color: #5b6ee8;
+  border: 2rpx solid #d8deff;
 }
 .gen-btn.disabled { opacity: 0.6; }
+
+/* 相似攻略候选区 */
+.similar-block {
+  border: 2rpx dashed #c7d0ff;
+  background: linear-gradient(180deg, #f7f9ff 0%, #ffffff 100%);
+}
+.similar-tip {
+  margin-bottom: 20rpx;
+  font-size: 24rpx;
+  color: #888;
+}
+.sim-card {
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  margin-bottom: 16rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(91,110,232,0.06);
+  border: 1rpx solid #eef0fb;
+}
+.sim-card:last-of-type { margin-bottom: 0; }
+.sim-cover {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 16rpx;
+  background: linear-gradient(135deg, #f0f4ff, #e8edff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  flex-shrink: 0;
+}
+.sim-mid {
+  flex: 1;
+  margin-left: 20rpx;
+  min-width: 0;
+}
+.sim-title {
+  font-size: 28rpx;
+  color: #222;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sim-meta {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: #888;
+}
+.sim-hit {
+  margin-top: 10rpx;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8rpx;
+}
+.sim-score {
+  font-size: 22rpx;
+  color: #5b6ee8;
+  font-weight: 600;
+  background: #eef1ff;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+  margin-right: 4rpx;
+}
+.sim-chip {
+  font-size: 20rpx;
+  color: #7c3aed;
+  background: #f6f0ff;
+  padding: 4rpx 10rpx;
+  border-radius: 16rpx;
+}
+.sim-arrow {
+  color: #ccc;
+  font-size: 40rpx;
+  margin-left: 12rpx;
+  flex-shrink: 0;
+}
+.similar-empty {
+  padding: 30rpx 0;
+  text-align: center;
+  font-size: 24rpx;
+  color: #999;
+}
 
 /* 思考遮罩 */
 .mask {

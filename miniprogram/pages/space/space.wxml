@@ -147,41 +147,6 @@
     </view>
   </view>
 
-  <!-- AI 行程助手浮动入口 -->
-  <view class="ai-fab" wx:if="{{tab === 'plan' && guide}}" bindtap="openAi">
-    <text class="ai-fab-emoji">🤖</text>
-    <text class="ai-fab-txt">AI 助手</text>
-  </view>
-
-  <!-- AI 行程助手弹层 -->
-  <view class="ai-mask" wx:if="{{aiVisible}}" bindtap="closeAi"></view>
-  <view class="ai-panel {{aiVisible ? 'show' : ''}}">
-    <view class="row between ai-head">
-      <view class="row">
-        <text class="ai-head-emoji">🤖</text>
-        <text class="ai-head-title">AI 行程助手·小伴</text>
-        <text class="ai-head-tag">AI</text>
-      </view>
-      <text class="ai-close" bindtap="closeAi">✕</text>
-    </view>
-    <scroll-view class="ai-msgs" scroll-y scroll-into-view="{{'a-msg-' + (aiMessages.length - 1)}}">
-      <view wx:for="{{aiMessages}}" wx:key="idx" id="a-msg-{{index}}" class="ai-msg {{item.from === 'user' ? 'user' : 'ai'}}">
-        <text wx:if="{{item.from === 'ai'}}" class="ai-msg-avatar">🤖</text>
-        <view class="ai-msg-bubble">{{item.text}}</view>
-      </view>
-    </scroll-view>
-    <view class="ai-presets">
-      <view wx:for="{{aiPresets}}" wx:key="*this" class="ai-preset" data-v="{{item.label}}" bindtap="aiPresetTap">
-        <text class="ai-preset-emoji">{{item.icon}}</text>
-        <text>{{item.label}}</text>
-      </view>
-    </view>
-    <view class="ai-input-bar">
-      <input class="ai-input" placeholder="告诉小伴你想调整什么…" value="{{aiInput}}" bindinput="onAiInput" bindconfirm="doSendAi" />
-      <view class="ai-send" bindtap="doSendAi">发送</view>
-    </view>
-  </view>
-
   <!-- 旅帐差额AA -->
   <view wx:elif="{{tab === 'ledger'}}" class="tab-pane">
     <view class="card">
@@ -282,6 +247,41 @@
         </view>
       </view>
       <view class="btn btn-primary mt16" bindtap="onSaveLedger">保存</view>
+    </view>
+  </view>
+
+  <!-- AI 行程助手浮动入口 -->
+  <view class="ai-fab" wx:if="{{tab === 'plan' && guide}}" bindtap="openAi">
+    <text class="ai-fab-emoji">🤖</text>
+    <text class="ai-fab-txt">AI 助手</text>
+  </view>
+
+  <!-- AI 行程助手弹层 -->
+  <view class="ai-mask" wx:if="{{aiVisible}}" bindtap="closeAi"></view>
+  <view class="ai-panel {{aiVisible ? 'show' : ''}}">
+    <view class="row between ai-head">
+      <view class="row">
+        <text class="ai-head-emoji">🤖</text>
+        <text class="ai-head-title">AI 行程助手·小伴</text>
+        <text class="ai-head-tag">AI</text>
+      </view>
+      <text class="ai-close" bindtap="closeAi">✕</text>
+    </view>
+    <scroll-view class="ai-msgs" scroll-y scroll-into-view="{{'a-msg-' + (aiMessages.length - 1)}}">
+      <view wx:for="{{aiMessages}}" wx:key="idx" id="a-msg-{{index}}" class="ai-msg {{item.from === 'user' ? 'user' : 'ai'}}">
+        <text wx:if="{{item.from === 'ai'}}" class="ai-msg-avatar">🤖</text>
+        <view class="ai-msg-bubble">{{item.text}}</view>
+      </view>
+    </scroll-view>
+    <view class="ai-presets">
+      <view wx:for="{{aiPresets}}" wx:key="*this" class="ai-preset" data-v="{{item.label}}" bindtap="aiPresetTap">
+        <text class="ai-preset-emoji">{{item.icon}}</text>
+        <text>{{item.label}}</text>
+      </view>
+    </view>
+    <view class="ai-input-bar">
+      <input class="ai-input" placeholder="告诉小伴你想调整什么…" value="{{aiInput}}" bindinput="onAiInput" bindconfirm="doSendAi" />
+      <view class="ai-send" bindtap="doSendAi">发送</view>
     </view>
   </view>
 </view>

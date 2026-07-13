@@ -20,22 +20,119 @@
   <view wx:if="{{tab === 'plan'}}" class="tab-pane">
     <view wx:if="{{!guide}}" class="empty">该空间还未绑定攻略</view>
     <view wx:else>
-      <view wx:for="{{planNodes}}" wx:key="_idx" wx:for-item="n" class="plan-node card">
-        <view class="pn-day">Day {{n.day}}</view>
-        <view class="pn-title">{{n.title}}</view>
-        <view class="pn-loc">📍 {{n.location}} · ¥{{n.cost}}</view>
-        <view wx:if="{{editNodeIdx !== n._idx}}" class="pn-note" data-idx="{{n._idx}}" bindtap="onTapNode">
-          {{n.note || '点我编辑备注'}}
+      <!-- 攻略 hero 元数据 -->
+      <view class="card guide-hero">
+        <view class="row between">
+          <view class="gh-title">{{guide.title}}</view>
+          <view class="gh-go" bindtap="onOpenGuide">查看原攻略 ›</view>
         </view>
-        <view wx:else class="pn-edit">
-          <textarea class="pn-input" value="{{editNoteDraft}}" bindinput="onEditNoteInput" auto-height />
-          <view class="row mt8">
-            <view class="btn btn-ghost" bindtap="onCancelEdit">取消</view>
-            <view class="btn btn-primary ml8" bindtap="onSaveEdit">留痕保存</view>
+        <view class="gh-summary mt8">{{guide.summary}}</view>
+        <view class="row wrap mt8">
+          <text class="gh-tag" wx:for="{{guide.tags}}" wx:key="*this">{{item}}</text>
+        </view>
+        <view class="row mt8 gh-author">
+          <text wx:if="{{guide.source === 'ai'}}">🤖 {{guide.author}}</text>
+          <text wx:else>✍️ {{guide.author}}</text>
+          <text class="gh-meta">📍{{guide.destination}} · {{guide.days}}天 · 预算¥{{guide.budget}}</text>
+        </view>
+      </view>
+
+      <!-- 行程节点 -->
+      <view class="card">
+        <view class="sec-title">📅 行程安排</view>
+        <view wx:for="{{planNodes}}" wx:key="_idx" wx:for-item="n" class="plan-node-inner">
+          <view class="pn-day">Day {{n.day}}</view>
+          <view class="pn-body">
+            <view class="row between">
+              <text class="pn-title">{{n.title}}</text>
+              <text class="pn-cost" wx:if="{{n.cost}}">¥{{n.cost}}</text>
+            </view>
+            <view class="pn-loc mt8">📍 {{n.location}}</view>
+
+            <!-- 备注：共编留痕 -->
+            <view wx:if="{{editNodeIdx !== n._idx}}" class="pn-note mt8" data-idx="{{n._idx}}" bindtap="onTapNode">
+              💡 {{n.note || '点我编辑备注'}}
+            </view>
+            <view wx:else class="pn-edit mt8">
+              <textarea class="pn-input" value="{{editNoteDraft}}" bindinput="onEditNoteInput" auto-height />
+              <view class="row mt8">
+                <view class="btn btn-ghost" bindtap="onCancelEdit">取消</view>
+                <view class="btn btn-primary ml8" bindtap="onSaveEdit">留痕保存</view>
+              </view>
+            </view>
+
+            <!-- 时间 -->
+            <view class="detail-row mt8" wx:if="{{n.timeSlot}}">
+              <text class="detail-label">🕐 时间</text><text class="detail-val">{{n.timeSlot}}</text>
+            </view>
+            <!-- 交通 -->
+            <view class="detail-row mt8" wx:if="{{n.transport}}">
+              <text class="detail-label">🚗 交通</text><text class="detail-val">{{n.transport}}</text>
+            </view>
+            <!-- 住宿 -->
+            <view class="detail-row mt8" wx:if="{{n.accommodation && n.accommodation !== '-'}}">
+              <text class="detail-label">🏨 住宿</text><text class="detail-val">{{n.accommodation}}</text>
+            </view>
+            <!-- 餐饮 -->
+            <view class="meal-block mt8" wx:if="{{n.meal}}">
+              <text class="detail-label">🍽️ 餐饮</text>
+              <view class="meal-item" wx:if="{{n.meal.breakfast && n.meal.breakfast !== '-'}}">
+                <text class="meal-tag">早</text><text class="meal-text">{{n.meal.breakfast}}</text>
+              </view>
+              <view class="meal-item" wx:if="{{n.meal.lunch && n.meal.lunch !== '-'}}">
+                <text class="meal-tag">午</text><text class="meal-text">{{n.meal.lunch}}</text>
+              </view>
+              <view class="meal-item" wx:if="{{n.meal.dinner && n.meal.dinner !== '-'}}">
+                <text class="meal-tag">晚</text><text class="meal-text">{{n.meal.dinner}}</text>
+              </view>
+            </view>
           </view>
         </view>
       </view>
 
+      <!-- 京东酒旅推荐 -->
+      <view class="card jd-block" wx:if="{{recHotels.length}}">
+        <view class="row between">
+          <text class="sec-title">🏨 跟着攻略订同款</text>
+          <text class="jd-more">京东酒旅 ›</text>
+        </view>
+        <view class="hotel-card" wx:for="{{recHotels}}" wx:key="id">
+          <view class="hotel-img">{{item.img}}</view>
+          <view class="hotel-info">
+            <view class="hotel-name">{{item.name}}</view>
+            <view class="row subtitle mt8">
+              <text>⭐{{item.score}}</text><text class="dot">·</text><text>{{item.city}}</text>
+            </view>
+            <view class="hotel-tag mt8">{{item.tag}} · 返{{item.bean}}京豆</view>
+          </view>
+          <view class="hotel-buy">
+            <view class="hotel-price">¥{{item.price}}<text class="hotel-origin">¥{{item.origin}}</text></view>
+            <view class="buy-btn" data-name="{{item.name}}" bindtap="onBookHotel">预订</view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 行前装备种草 -->
+      <view class="card jd-block" wx:if="{{gears.length}}">
+        <view class="row between">
+          <text class="sec-title">🎒 行前装备清单</text>
+          <text class="jd-more">京东自营 ›</text>
+        </view>
+        <view class="jd-tip mt8">根据本攻略「{{guide.tags}}」智能推荐</view>
+        <view class="gear-grid mt16">
+          <view class="gear-item" wx:for="{{gears}}" wx:key="id">
+            <view class="gear-img">{{item.img}}</view>
+            <view class="gear-name">{{item.name}}</view>
+            <view class="gear-sales">{{item.sales}}</view>
+            <view class="row between gear-foot">
+              <text class="gear-price">¥{{item.price}}</text>
+              <view class="cart-btn" data-name="{{item.name}}" bindtap="onAddCart">+ 加购</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 共编留痕时间线 -->
       <view wx:if="{{edits.length > 0}}" class="card edit-history">
         <view class="eh-title">📜 共编留痕（{{edits.length}}）</view>
         <view wx:for="{{edits}}" wx:key="id" class="eh-item">
@@ -47,6 +144,41 @@
           <view class="eh-diff plus">+{{item.newVal}}</view>
         </view>
       </view>
+    </view>
+  </view>
+
+  <!-- AI 行程助手浮动入口 -->
+  <view class="ai-fab" wx:if="{{tab === 'plan' && guide}}" bindtap="openAi">
+    <text class="ai-fab-emoji">🤖</text>
+    <text class="ai-fab-txt">AI 助手</text>
+  </view>
+
+  <!-- AI 行程助手弹层 -->
+  <view class="ai-mask" wx:if="{{aiVisible}}" bindtap="closeAi"></view>
+  <view class="ai-panel {{aiVisible ? 'show' : ''}}">
+    <view class="row between ai-head">
+      <view class="row">
+        <text class="ai-head-emoji">🤖</text>
+        <text class="ai-head-title">AI 行程助手·小伴</text>
+        <text class="ai-head-tag">AI</text>
+      </view>
+      <text class="ai-close" bindtap="closeAi">✕</text>
+    </view>
+    <scroll-view class="ai-msgs" scroll-y scroll-into-view="{{'a-msg-' + (aiMessages.length - 1)}}">
+      <view wx:for="{{aiMessages}}" wx:key="idx" id="a-msg-{{index}}" class="ai-msg {{item.from === 'user' ? 'user' : 'ai'}}">
+        <text wx:if="{{item.from === 'ai'}}" class="ai-msg-avatar">🤖</text>
+        <view class="ai-msg-bubble">{{item.text}}</view>
+      </view>
+    </scroll-view>
+    <view class="ai-presets">
+      <view wx:for="{{aiPresets}}" wx:key="*this" class="ai-preset" data-v="{{item.label}}" bindtap="aiPresetTap">
+        <text class="ai-preset-emoji">{{item.icon}}</text>
+        <text>{{item.label}}</text>
+      </view>
+    </view>
+    <view class="ai-input-bar">
+      <input class="ai-input" placeholder="告诉小伴你想调整什么…" value="{{aiInput}}" bindinput="onAiInput" bindconfirm="doSendAi" />
+      <view class="ai-send" bindtap="doSendAi">发送</view>
     </view>
   </view>
 

@@ -48,6 +48,20 @@ Page({
     ledger: [],        // 当前 space 的账目
     settlements: [],   // 净转账结果
     memberStats: [],   // 成员累计付/应付/净转
+    gears: [],
+    recHotels: [],
+    // AI 助手
+    aiVisible: false,
+    aiInput: '',
+    aiMessages: [
+      { from: 'ai', text: '你好！我是小伴 🤖 你的行程助手。想调整行程、换酒店、加景点都可以问我～' },
+    ],
+    aiPresets: [
+      { icon: '🌧️', label: '下雨怎么办' },
+      { icon: '💰', label: '省钱攻略' },
+      { icon: '🎒', label: '必带装备' },
+      { icon: '🏨', label: '换更便宜的酒店' },
+    ],
     showAddLedger: false,
     newLedger: { title: '', amount: '', category: '餐饮', payerId: '', splits: [] },
     categories: CATEGORIES,
@@ -94,6 +108,7 @@ Page({
       settlements,
       memberStats,
     });
+    if (guide) this.buildRecommend(guide);
     wx.setNavigationBarTitle({ title: space.title });
   },
 
@@ -269,5 +284,68 @@ Page({
   // ===== 成员 =====
   onInviteMember() {
     wx.showToast({ title: '分享给搭子(开发中)', icon: 'none' });
+  },
+
+  // ===== 攻略推荐 =====
+  buildRecommend(guide) {
+    const gearMap = mock.gearByTag || {};
+    const seen = {};
+    const gears = [];
+    (guide.tags || []).forEach((tag) => {
+      (gearMap[tag] || []).forEach((g) => {
+        if (!seen[g.id]) { seen[g.id] = 1; gears.push(g); }
+      });
+    });
+    const kw = (guide.destination || '').split('·').pop();
+    const hotels = (mock.jdTravel.hotels || []).filter(
+      (h) => h.city.indexOf(kw) > -1 || (guide.destination || '').indexOf(h.city.split('·').pop()) > -1
+    );
+    this.setData({ gears, recHotels: hotels });
+  },
+
+  onOpenGuide() {
+    const guide = this.data.guide;
+    if (!guide) return;
+    wx.navigateTo({ url: '/pages/guide/detail/detail?id=' + guide.id });
+  },
+
+  onBookHotel(e) {
+    wx.showToast({ title: '预订：' + e.currentTarget.dataset.name + '（开发中）', icon: 'none' });
+  },
+  onAddCart(e) {
+    wx.showToast({ title: '加购：' + e.currentTarget.dataset.name, icon: 'success' });
+  },
+
+  // ===== AI 行程助手 =====
+  openAi() { this.setData({ aiVisible: true }); },
+  closeAi() { this.setData({ aiVisible: false }); },
+  onAiInput(e) { this.setData({ aiInput: e.detail.value }); },
+
+  aiPresetTap(e) {
+    const label = e.currentTarget.dataset.v;
+    this.setData({ aiInput: label });
+    this.doSendAi();
+  },
+
+  doSendAi() {
+    const { aiInput, aiMessages, guide } = this.data;
+    if (!aiInput.trim()) return;
+    const userMsg = { from: 'user', text: aiInput, idx: aiMessages.length };
+    const aiMsg = { from: 'ai', text: this._aiAnswer(aiInput, guide), idx: aiMessages.length + 1 };
+    this.setData({
+      aiMessages: [...aiMessages, userMsg, aiMsg],
+      aiInput: '',
+    });
+  },
+
+  _aiAnswer(q, guide) {
+    if (!guide) return '当前空间未绑定攻略，请先选择攻略～';
+    if (q.indexOf('下雨') > -1) return guide.destination.indexOf('稻城') > -1
+      ? '稻城亚丁下雨不影响核心景观，珍珠海更仙！建议带雨衣+防水鞋套，景区商店也有卖。'
+      : '建议备好雨衣和防水鞋套，室内景点优先安排，室外灵活调整顺序～';
+    if (q.indexOf('省钱') > -1) return '本攻略总预算¥' + guide.budget + '，交通是大头——提前订高铁/自驾拼车最划算，住宿选民宿比酒店省30-50%，景区自带干粮省一半。';
+    if (q.indexOf('装备') > -1 || q.indexOf('必带') > -1) return '防晒霜、冲锋衣、登山鞋、保温杯、充电宝、雨衣是川西必备六件套，高原再加墨镜+唇膏。';
+    if (q.indexOf('酒店') > -1 || q.indexOf('住宿') > -1 || q.indexOf('便宜') > -1) return '同目的地更便宜的酒店已在上方推荐，比当前方案省20-40%，点击预订即可。';
+    return '好的，我帮你看看攻略中"' + guide.title + '"的相关安排，稍后给出调整建议～';
   },
 });

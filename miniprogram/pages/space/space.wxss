@@ -30,6 +30,32 @@
 .empty { text-align: center; color: #999; padding: 40rpx 0; font-size: 26rpx; }
 
 /* ===== 行程共编 ===== */
+/* 攻略 hero 元数据 */
+.guide-hero { background: #fff; }
+.gh-title { font-size: 34rpx; font-weight: 700; color: #1a1a1a; flex: 1; }
+.gh-go { font-size: 26rpx; color: #ff8e53; font-weight: 600; }
+.gh-summary { font-size: 26rpx; color: #555; line-height: 1.6; }
+.gh-tag { display: inline-block; padding: 4rpx 14rpx; background: #f0f0f0; color: #666;
+  font-size: 22rpx; border-radius: 8rpx; margin-right: 8rpx; }
+.gh-author { font-size: 24rpx; color: #888; }
+.gh-meta { font-size: 22rpx; color: #999; margin-left: 12rpx; }
+
+/* 行程节点 */
+.plan-node-inner { display: flex; gap: 20rpx; padding: 20rpx 0; border-top: 1rpx solid #f0f1f5; }
+.plan-node-inner:first-of-type { border-top: none; }
+.pn-body { flex: 1; }
+.pn-cost { color: #eb5757; font-size: 26rpx; font-weight: 600; }
+
+/* 节点详情：时间/交通/住宿/餐饮 */
+.detail-row { display: flex; align-items: flex-start; font-size: 24rpx; line-height: 1.6; }
+.detail-label { flex-shrink: 0; width: 100rpx; color: #888; }
+.detail-val { flex: 1; color: #444; }
+.meal-block { font-size: 24rpx; }
+.meal-item { display: flex; align-items: flex-start; margin-top: 8rpx; line-height: 1.6; }
+.meal-tag { flex-shrink: 0; width: 100rpx; text-align: center; background: #eef3fd; color: #2f80ed;
+  border-radius: 8rpx; font-size: 20rpx; padding: 2rpx 12rpx; margin-right: 12rpx; }
+.meal-text { flex: 1; color: #444; }
+
 .plan-node { padding: 24rpx; }
 .pn-day { display: inline-block; padding: 4rpx 16rpx; background: #fff7f0;
   color: #ff8e53; font-size: 22rpx; font-weight: 700; border-radius: 8rpx; }
@@ -124,6 +150,89 @@
 .btn-ghost { background: #fff; color: #fe6b6b; border: 2rpx solid #fe6b6b; }
 
 .row { display: flex; align-items: center; }
+.between { justify-content: space-between; }
+.wrap { flex-wrap: wrap; }
 .ml8 { margin-left: 16rpx; }
 .mt8 { margin-top: 8rpx; }
 .mt16 { margin-top: 16rpx; }
+.dot { margin: 0 10rpx; color: #ccc; }
+
+/* ===== 京东种草区块 ===== */
+.jd-block .sec-title { font-size: 30rpx; }
+.jd-more { color: #e1251b; font-size: 24rpx; }
+.jd-tip { font-size: 24rpx; color: #999; }
+
+/* 酒店卡片 */
+.hotel-card { display: flex; align-items: center; gap: 16rpx; padding: 20rpx 0; border-top: 1rpx solid #f0f1f5; }
+.hotel-img { width: 96rpx; height: 96rpx; border-radius: 12rpx; background: #f5f6fa;
+  font-size: 48rpx; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.hotel-info { flex: 1; min-width: 0; }
+.hotel-name { font-size: 28rpx; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hotel-tag { display: inline-block; font-size: 22rpx; color: #e1251b; background: #fdeceb;
+  border-radius: 6rpx; padding: 2rpx 12rpx; }
+.hotel-buy { text-align: right; flex-shrink: 0; }
+.hotel-price { color: #e1251b; font-size: 32rpx; font-weight: 700; }
+.hotel-origin { color: #bbb; font-size: 22rpx; text-decoration: line-through; margin-left: 6rpx; font-weight: 400; }
+.buy-btn { margin-top: 8rpx; background: linear-gradient(135deg, #e1251b, #ff6034);
+  color: #fff; border-radius: 100rpx; padding: 8rpx 28rpx; font-size: 24rpx; }
+
+/* 装备网格 */
+.gear-grid { display: flex; flex-wrap: wrap; gap: 20rpx; }
+.gear-item { width: calc(50% - 10rpx); box-sizing: border-box; background: #fafbfc;
+  border-radius: 12rpx; padding: 16rpx; }
+.gear-img { font-size: 56rpx; text-align: center; padding: 8rpx 0; }
+.gear-name { font-size: 26rpx; line-height: 1.4; height: 72rpx; overflow: hidden; }
+.gear-sales { color: #999; font-size: 22rpx; margin: 6rpx 0; }
+.gear-foot { align-items: center; }
+.gear-price { color: #e1251b; font-size: 30rpx; font-weight: 700; }
+.cart-btn { background: #ffe8c2; color: #e6871e; border-radius: 100rpx;
+  padding: 6rpx 20rpx; font-size: 22rpx; }
+
+/* ===== AI 行程助手 ===== */
+.ai-fab { position: fixed; right: 28rpx; bottom: 180rpx; z-index: 90;
+  width: 110rpx; height: 110rpx; border-radius: 50%;
+  background: linear-gradient(135deg, #6a82fb 0%, #7c3aed 100%);
+  box-shadow: 0 12rpx 32rpx rgba(106, 130, 251, 0.45);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: #fff; font-size: 22rpx; animation: aiFabPulse 2.4s ease-in-out infinite; }
+.ai-fab-emoji { font-size: 40rpx; line-height: 1; }
+.ai-fab-txt { font-size: 20rpx; margin-top: 2rpx; font-weight: 600; }
+@keyframes aiFabPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 12rpx 32rpx rgba(106, 130, 251, 0.45); }
+  50%      { transform: scale(1.06); box-shadow: 0 16rpx 40rpx rgba(124, 58, 237, 0.6); }
+}
+.ai-mask { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 100; }
+.ai-panel { position: fixed; left: 0; right: 0; bottom: 0; z-index: 101;
+  height: 70vh; background: #fff; border-top-left-radius: 32rpx; border-top-right-radius: 32rpx;
+  display: flex; flex-direction: column; transform: translateY(100%);
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-bottom: env(safe-area-inset-bottom); }
+.ai-panel.show { transform: translateY(0); }
+.ai-head { padding: 24rpx 28rpx; border-bottom: 1rpx solid #f0f0f0; align-items: center; }
+.ai-head-emoji { font-size: 36rpx; margin-right: 12rpx; }
+.ai-head-title { font-size: 30rpx; font-weight: 700; color: #1f1f1f; }
+.ai-head-tag { margin-left: 12rpx; font-size: 20rpx; color: #7c3aed; background: #f1eafe;
+  padding: 4rpx 12rpx; border-radius: 8rpx; font-weight: 600; }
+.ai-close { font-size: 36rpx; color: #999; padding: 0 12rpx; }
+.ai-msgs { flex: 1; padding: 20rpx 24rpx; box-sizing: border-box; }
+.ai-msg { display: flex; margin-bottom: 20rpx; align-items: flex-start; }
+.ai-msg.user { flex-direction: row-reverse; }
+.ai-msg-avatar { font-size: 32rpx; margin-right: 12rpx; line-height: 1.4; }
+.ai-msg.user .ai-msg-avatar { display: none; }
+.ai-msg-bubble { max-width: 76%; padding: 16rpx 22rpx; border-radius: 20rpx;
+  font-size: 26rpx; line-height: 1.55; word-break: break-all; }
+.ai-msg.ai .ai-msg-bubble { background: linear-gradient(135deg, #f1eafe 0%, #e0e7ff 100%);
+  color: #2a1f5d; border-top-left-radius: 4rpx; }
+.ai-msg.user .ai-msg-bubble { background: linear-gradient(135deg, #6a82fb 0%, #7c3aed 100%);
+  color: #fff; border-top-right-radius: 4rpx; }
+.ai-presets { padding: 16rpx 24rpx 8rpx; display: flex; flex-wrap: wrap; gap: 14rpx;
+  border-top: 1rpx solid #f0f0f0; }
+.ai-preset { display: inline-flex; align-items: center; background: #f6f7fb; color: #4a4458;
+  padding: 12rpx 22rpx; border-radius: 100rpx; font-size: 24rpx; border: 1rpx solid #ececf2; }
+.ai-preset-emoji { margin-right: 8rpx; font-size: 26rpx; }
+.ai-input-bar { display: flex; align-items: center; padding: 16rpx 24rpx;
+  border-top: 1rpx solid #f0f0f0; background: #fff; }
+.ai-input { flex: 1; background: #f6f7fb; border-radius: 100rpx; padding: 16rpx 24rpx;
+  font-size: 26rpx; margin-right: 16rpx; }
+.ai-send { background: linear-gradient(135deg, #6a82fb 0%, #7c3aed 100%); color: #fff;
+  padding: 16rpx 28rpx; border-radius: 100rpx; font-size: 26rpx; font-weight: 600; }

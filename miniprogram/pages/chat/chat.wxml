@@ -1,0 +1,25 @@
+<view class="chat-list-page">
+  <view class="cl-header">消息</view>
+
+  <view wx:if="{{conversations.length === 0}}" class="cl-empty">
+    还没有会话，去攻略或搭子页发起私聊吧～
+  </view>
+
+  <view
+    wx:for="{{conversations}}"
+    wx:key="id"
+    class="cl-item"
+    data-conv="{{item}}"
+    bindtap="openChat"
+  >
+    <view class="cl-avatar">{{item.avatar}}</view>
+    <view class="cl-body">
+      <view class="cl-top">
+        <text class="cl-name">{{item.name}}</text>
+        <text class="cl-time">{{item.time}}</text>
+      </view>
+      <view class="cl-msg">{{item.lastMsg}}</view>
+    </view>
+    <view wx:if="{{item.unread > 0}}" class="cl-badge">{{item.unread}}</view>
+  </view>
+</view>

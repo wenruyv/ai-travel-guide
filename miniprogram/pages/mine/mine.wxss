@@ -1,0 +1,134 @@
+.header {
+  background: linear-gradient(135deg, #2f80ed, #56ccf2);
+  color: #fff;
+  padding: 60rpx 24rpx 40rpx;
+  text-align: center;
+}
+.avatar-big {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 72rpx;
+  margin: 0 auto;
+}
+.nickname {
+  font-size: 38rpx;
+  font-weight: 600;
+  margin-top: 20rpx;
+}
+.bio {
+  font-size: 26rpx;
+  opacity: 0.9;
+  margin-top: 12rpx;
+}
+.tags {
+  justify-content: center;
+  margin-top: 20rpx;
+}
+.header .tag {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+/* 统计 */
+.stats {
+  display: flex;
+}
+.stat-item {
+  flex: 1;
+  text-align: center;
+}
+.stat-num {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #2f80ed;
+}
+.stat-label {
+  font-size: 24rpx;
+  color: #8a8a8a;
+  margin-top: 8rpx;
+}
+
+/* 菜单 */
+.menu {
+  padding: 0 24rpx;
+}
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 0;
+  border-bottom: 1rpx solid #f5f6fa;
+}
+.menu-item:last-child {
+  border-bottom: none;
+}
+.menu-icon {
+  font-size: 40rpx;
+  margin-right: 20rpx;
+}
+.menu-name {
+  flex: 1;
+  font-size: 30rpx;
+}
+.menu-arrow {
+  color: #ccc;
+  font-size: 40rpx;
+}
+.msg-entry {
+  display: flex;
+  align-items: center;
+}
+
+/* PLUS 会员卡 */
+.vip {
+  background: linear-gradient(135deg, #2b2b2b, #4a3a2a);
+  color: #f5d18a;
+}
+.vip-top { display: flex; justify-content: space-between; align-items: center; }
+.vip-level { font-size: 32rpx; font-weight: bold; }
+.vip-bean { font-size: 26rpx; color: #ffd400; }
+.vip-bar {
+  height: 12rpx;
+  background: rgba(255,255,255,0.2);
+  border-radius: 8rpx;
+  margin: 20rpx 0 10rpx;
+  overflow: hidden;
+}
+.vip-bar-fill { height: 100%; background: linear-gradient(90deg,#ffd400,#ff8a00); }
+.vip-growth { font-size: 22rpx; color: rgba(245,209,138,0.8); }
+.vip-benefits { display: flex; justify-content: space-between; margin-top: 24rpx; }
+.benefit { flex: 1; text-align: center; }
+.benefit-icon { font-size: 40rpx; }
+.benefit-name { font-size: 24rpx; color: #f5d18a; margin-top: 6rpx; }
+.benefit-desc { font-size: 20rpx; color: rgba(245,209,138,0.6); margin-top: 4rpx; }
+
+/* 任务签到 */
+.sign-btn {
+  background: #e1251b;
+  color: #fff;
+  font-size: 24rpx;
+  padding: 10rpx 28rpx;
+  border-radius: 40rpx;
+}
+.sign-btn.signed { background: #ccc; }
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+.task-name { font-size: 28rpx; color: #222; }
+.task-reward { font-size: 22rpx; color: #ff8a00; margin-top: 4rpx; }
+.task-cta {
+  background: #fff0ef;
+  color: #e1251b;
+  font-size: 24rpx;
+  padding: 10rpx 24rpx;
+  border-radius: 40rpx;
+}
+.task-cta.done { background: #f0f0f0; color: #999; }

@@ -1,0 +1,95 @@
+<view class="container">
+  <!-- 足迹地图入口 -->
+  <view class="card map-entry" bindtap="viewMap">
+    <view class="row between">
+      <view>
+        <view class="title">🗺 我的足迹地图</view>
+        <view class="subtitle mt8">已打卡 {{all.length}} 个地点</view>
+      </view>
+      <view class="map-preview">🌏</view>
+    </view>
+  </view>
+
+  <!-- 打卡帖子流 -->
+  <view class="post" wx:for="{{all}}" wx:key="id">
+    <!-- 作者信息 -->
+    <view class="post-head">
+      <view class="post-avatar">{{item.avatar}}</view>
+      <view class="post-head-mid">
+        <view class="post-author">{{item.author}}</view>
+        <view class="post-loc">📍 {{item.location}} · {{item.date}}</view>
+      </view>
+    </view>
+
+    <!-- 正文 -->
+    <view class="post-note">{{item.note}}</view>
+
+    <!-- 图片墙 -->
+    <view class="post-imgs grid-{{item.images.length > 4 ? 3 : (item.images.length > 1 ? 2 : 1)}}">
+      <view class="post-img" wx:for="{{item.images}}" wx:for-item="img" wx:key="index">{{img}}</view>
+    </view>
+
+    <!-- 标签 -->
+    <view class="post-tags" wx:if="{{item.tags.length}}">
+      <text class="post-tag" wx:for="{{item.tags}}" wx:for-item="t" wx:key="*this">#{{t}}</text>
+    </view>
+
+    <!-- 操作栏 -->
+    <view class="post-actions">
+      <view class="act {{item.liked ? 'liked' : ''}}" data-id="{{item.id}}" bindtap="onLike">
+        {{item.liked ? '❤️' : '🤍'}} {{item.likes}}
+      </view>
+      <view class="act" data-id="{{item.id}}" bindtap="toggleComment">💬 {{item.comments.length}}</view>
+    </view>
+
+    <!-- 评论列表 -->
+    <view class="comments" wx:if="{{item.comments.length}}">
+      <view class="comment" wx:for="{{item.comments}}" wx:for-item="c" wx:key="index">
+        <text class="comment-user">{{c.user}}：</text><text class="comment-text">{{c.text}}</text>
+      </view>
+    </view>
+
+    <!-- 评论输入框 -->
+    <view class="comment-box" wx:if="{{commentBoxId === item.id}}">
+      <input class="comment-input" placeholder="说点什么..." value="{{commentText}}" bindinput="onComment" />
+      <view class="comment-send" data-id="{{item.id}}" bindtap="sendComment">发送</view>
+    </view>
+  </view>
+
+  <view wx:if="{{all.length === 0}}" class="empty">还没有打卡，快去记录旅途吧</view>
+</view>
+
+<!-- 发帖悬浮按钮 -->
+<view class="fab" bindtap="openPost">＋ 打卡</view>
+
+<!-- 发帖弹窗 -->
+<view class="modal-mask" wx:if="{{showPost}}" bindtap="closePost"></view>
+<view class="modal {{showPost ? 'show' : ''}}">
+  <view class="row between">
+    <text class="title">发布打卡</text>
+    <text class="ai-close" bindtap="closePost">✕</text>
+  </view>
+
+  <!-- 多图上传 -->
+  <view class="upload-grid mt16">
+    <view class="upload-img" wx:for="{{form.images}}" wx:key="index">
+      {{item}}
+      <text class="upload-del" data-idx="{{index}}" catchtap="removeImage">✕</text>
+    </view>
+    <view class="upload-add" wx:if="{{form.images.length < 9}}" bindtap="chooseImages">＋</view>
+  </view>
+
+  <view class="form-row mt16">
+    <text class="form-label">地点</text>
+    <input class="form-input" placeholder="你在哪里打卡" value="{{form.location}}" bindinput="onLocation" />
+  </view>
+  <view class="form-col mt16">
+    <text class="form-label">分享内容</text>
+    <textarea class="form-textarea" placeholder="记录这一刻的心情与攻略..." value="{{form.note}}" bindinput="onNote" />
+  </view>
+  <view class="form-row mt16">
+    <text class="form-label">标签</text>
+    <input class="form-input" placeholder="用空格分隔，如 摄影 日落" value="{{form.tags}}" bindinput="onTags" />
+  </view>
+  <view class="btn btn-primary mt24" bindtap="publishPost">发布帖子</view>
+</view>

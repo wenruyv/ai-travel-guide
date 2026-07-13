@@ -1,0 +1,44 @@
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input">
+      <text class="search-icon">🔍</text>
+      <input
+        placeholder="搜目的地/美食/玩法，如 稻城、赏樱"
+        value="{{keyword}}"
+        bindinput="onInput"
+        bindconfirm="onSearch"
+      />
+    </view>
+    <view class="search-btn" bindtap="onSearch">搜索</view>
+  </view>
+
+  <!-- 攻略瀑布流 -->
+  <view class="guide-list">
+    <view class="card guide-card" wx:for="{{guides}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+      <view class="cover">{{item.cover}}</view>
+      <view class="guide-body">
+        <view class="title">{{item.title}}</view>
+        <view class="row subtitle mt8">
+          <text>📍{{item.destination}}</text>
+          <text class="dot">·</text>
+          <text>{{item.days}}天</text>
+          <text class="dot">·</text>
+          <text>预算¥{{item.budget}}</text>
+        </view>
+        <view class="row wrap mt16">
+          <text class="tag" wx:for="{{item.tags}}" wx:for-item="t" wx:key="*this">{{t}}</text>
+        </view>
+        <view class="row between mt16 stat">
+          <text>👤 {{item.author}}</text>
+          <text>❤️ {{item.likes}} · 📋 {{item.copies}}次复制</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{guides.length === 0}}" class="empty">没有找到相关攻略，换个关键词试试~</view>
+  </view>
+</view>
+
+<!-- 悬浮发布按钮 -->
+<view class="fab" bindtap="onPublish">＋</view>

@@ -1,0 +1,139 @@
+<view class="ai-page">
+  <!-- Hero 区 -->
+  <view class="hero">
+    <view class="hero-bg">🤖</view>
+    <view class="hero-title">AI 一键生成你的旅行攻略</view>
+    <view class="hero-sub">告诉我想去哪儿，10 秒生成含交通 / 住宿 / 餐饮的完整攻略</view>
+  </view>
+
+  <!-- 场景模板 -->
+  <view class="block">
+    <view class="row between block-title">
+      <text>🎯 挑一个场景试试</text>
+      <text class="link" bindtap="goGuideList">经典攻略库 ›</text>
+    </view>
+    <scroll-view scroll-x class="sc-row">
+      <view
+        class="sc-card"
+        wx:for="{{scenarios}}"
+        wx:key="id"
+        data-s="{{item}}"
+        bindtap="useScenario"
+      >
+        <view class="sc-cover">{{item.cover}}</view>
+        <view class="sc-name">{{item.name}}</view>
+        <view class="sc-meta">{{item.days}}天 · {{item.people}}</view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 表单 -->
+  <view class="block form">
+    <view class="block-title">📝 说出你的旅行条件</view>
+
+    <view class="row">
+      <text class="lab">目的地</text>
+      <input class="ipt flex1" placeholder="例：日本京都 / 川西 / 厦门" value="{{form.destination}}" bindinput="onInput" />
+    </view>
+
+    <view class="row">
+      <text class="lab">天数</text>
+      <view class="stepper">
+        <view class="stp-btn" bindtap="decDay">−</view>
+        <text class="stp-num">{{form.days}} 天</text>
+        <view class="stp-btn" bindtap="incDay">+</view>
+      </view>
+    </view>
+
+    <view class="row">
+      <text class="lab">预算</text>
+      <view class="opts wrap">
+        <view
+          wx:for="{{options.budgetLevel}}"
+          wx:key="*this"
+          class="opt {{form.budgetLevel === item ? 'on' : ''}}"
+          data-v="{{item}}"
+          bindtap="pickBudget"
+        >{{item}}</view>
+      </view>
+    </view>
+
+    <view class="row">
+      <text class="lab">同行人</text>
+      <view class="opts wrap">
+        <view
+          wx:for="{{options.people}}"
+          wx:key="*this"
+          class="opt {{form.people === item ? 'on' : ''}}"
+          data-v="{{item}}"
+          bindtap="pickPeople"
+        >{{item}}</view>
+      </view>
+    </view>
+
+    <view class="row">
+      <text class="lab">节奏</text>
+      <view class="opts wrap">
+        <view
+          wx:for="{{options.pace}}"
+          wx:key="*this"
+          class="opt {{form.pace === item ? 'on' : ''}}"
+          data-v="{{item}}"
+          bindtap="pickPace"
+        >{{item}}</view>
+      </view>
+    </view>
+
+    <view class="row top">
+      <text class="lab">偏好</text>
+      <view class="opts wrap flex1">
+        <view
+          wx:for="{{options.preferences}}"
+          wx:key="*this"
+          class="opt {{form.preferences.indexOf(item) >= 0 ? 'on' : ''}}"
+          data-v="{{item}}"
+          bindtap="togglePref"
+        >{{item}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 生成按钮 -->
+  <view class="gen-bar">
+    <view class="gen-btn {{generating ? 'disabled' : ''}}" bindtap="onGenerate">
+      {{generating ? 'AI 生成中…' : '🤖 AI 一键生成攻略'}}
+    </view>
+  </view>
+
+  <!-- 生成中遮罩 -->
+  <view class="mask" wx:if="{{generating}}">
+    <view class="think-card">
+      <view class="think-icon">🤖</view>
+      <view class="think-title">AI 正在为你规划</view>
+      <view class="think-bar">
+        <view class="think-fill" style="width:{{thinkPercent}}%"></view>
+      </view>
+      <view class="think-text">{{thinkText}}</view>
+      <view class="think-percent">{{thinkPercent}}%</view>
+    </view>
+  </view>
+
+  <!-- 历史记录 -->
+  <view class="block" wx:if="{{history.length}}">
+    <view class="block-title">🕘 我的生成记录</view>
+    <view
+      class="hi-item"
+      wx:for="{{history}}"
+      wx:key="id"
+      data-h="{{item}}"
+      bindtap="onOpenHistory"
+    >
+      <view class="hi-cover">{{item.cover}}</view>
+      <view class="hi-mid">
+        <view class="hi-title">{{item.title}}</view>
+        <view class="hi-meta">{{item.days}}天 · 预算¥{{item.budget}} · {{item.time}}</view>
+      </view>
+      <text class="hi-arrow">›</text>
+    </view>
+  </view>
+</view>

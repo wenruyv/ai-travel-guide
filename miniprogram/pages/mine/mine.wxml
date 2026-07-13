@@ -1,0 +1,79 @@
+<view class="header">
+  <view class="avatar-big">😎</view>
+  <view class="nickname">{{user.nickname}}</view>
+  <view class="bio">{{user.bio}}</view>
+  <view class="row wrap tags">
+    <text class="tag" wx:for="{{user.tags}}" wx:key="*this">{{item}}</text>
+  </view>
+</view>
+
+<view class="container">
+  <!-- 我的消息入口 -->
+  <view class="card msg-entry" bindtap="onChat">
+    <text class="menu-icon">💬</text>
+    <text class="menu-name">我的消息</text>
+    <text class="menu-arrow">›</text>
+  </view>
+
+  <!-- 数据统计 -->
+  <view class="card stats">
+    <view class="stat-item">
+      <view class="stat-num">{{stats.guides}}</view>
+      <view class="stat-label">攻略</view>
+    </view>
+    <view class="stat-item">
+      <view class="stat-num">{{stats.buddies}}</view>
+      <view class="stat-label">搭子</view>
+    </view>
+    <view class="stat-item">
+      <view class="stat-num">{{stats.checkins}}</view>
+      <view class="stat-label">打卡</view>
+    </view>
+  </view>
+
+  <!-- PLUS 会员成长卡 -->
+  <view class="card vip">
+    <view class="vip-top">
+      <view class="vip-level">{{membership.levelIcon}} {{membership.level}}</view>
+      <view class="vip-bean">🫘 {{membership.bean}} 京豆</view>
+    </view>
+    <view class="vip-bar">
+      <view class="vip-bar-fill" style="width:{{growthPercent}}%"></view>
+    </view>
+    <view class="vip-growth">成长值 {{membership.growth}}/{{membership.nextLevel}}，升级享更多返豆</view>
+    <view class="vip-benefits">
+      <view class="benefit" wx:for="{{membership.benefits}}" wx:key="name">
+        <view class="benefit-icon">{{item.icon}}</view>
+        <view class="benefit-name">{{item.name}}</view>
+        <view class="benefit-desc">{{item.desc}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 签到 + 任务领京豆 -->
+  <view class="card task">
+    <view class="row between">
+      <text class="title">🎯 旅行任务 · 领京豆</text>
+      <view class="sign-btn {{tasks.signedToday ? 'signed' : ''}}" bindtap="onSignIn">
+        {{tasks.signedToday ? '已签到' : '签到+5'}}
+      </view>
+    </view>
+    <view class="subtitle mt8">已连续签到 {{tasks.signInDays}} 天</view>
+    <view class="task-item" wx:for="{{tasks.list}}" wx:key="id">
+      <view class="task-mid">
+        <view class="task-name">{{item.name}}</view>
+        <view class="task-reward">+{{item.reward}} 京豆</view>
+      </view>
+      <view class="task-cta {{item.done ? 'done' : ''}}" data-id="{{item.id}}" bindtap="onTask">{{item.cta}}</view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="card menu">
+    <view class="menu-item" wx:for="{{menus}}" wx:key="name" data-name="{{item.name}}" bindtap="onMenu">
+      <text class="menu-icon">{{item.icon}}</text>
+      <text class="menu-name">{{item.name}}</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+</view>

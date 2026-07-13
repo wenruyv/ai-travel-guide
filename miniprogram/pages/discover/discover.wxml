@@ -1,0 +1,51 @@
+<view class="page">
+  <!-- AI 攻略生成入口 banner -->
+  <view class="ai-banner" bindtap="goAiGuide">
+    <view class="ai-banner-icon">🤖</view>
+    <view class="ai-banner-mid">
+      <view class="ai-banner-title">AI 一键生成你的旅行攻略</view>
+      <view class="ai-banner-sub">10 秒含交通/住宿/餐饮，3 个常用模板</view>
+    </view>
+    <view class="ai-banner-arrow">›</view>
+  </view>
+
+  <!-- 顶部 tab -->
+  <view class="tabs">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="*this"
+      class="tab {{tabIndex===index?'active':''}}"
+      data-idx="{{index}}"
+      bindtap="switchTab"
+    >{{item}}</view>
+  </view>
+
+  <!-- 双列瀑布流 -->
+  <view class="waterfall">
+    <view class="post-card" wx:for="{{list}}" wx:key="id" data-id="{{item.id}}" bindtap="viewPost">
+      <!-- 封面 -->
+      <view class="cover">{{item.images[0]}}</view>
+      <!-- 正文 -->
+      <view class="body">
+        <view class="note">{{item.note}}</view>
+        <view class="loc">📍 {{item.location}}</view>
+        <view class="foot">
+          <view class="user">
+            <text class="ava">{{item.avatar}}</text>
+            <text class="uname">{{item.author}}</text>
+          </view>
+          <view
+            class="like {{item.liked?'liked':''}}"
+            catchtap="onLike"
+            data-id="{{item.id}}"
+          >{{item.liked?'❤️':'🤍'}} {{item.likes}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{list.length===0}}">暂无推荐内容</view>
+
+  <!-- 发布悬浮按钮 -->
+  <view class="fab" bindtap="goCheckin">＋ 打卡</view>
+</view>

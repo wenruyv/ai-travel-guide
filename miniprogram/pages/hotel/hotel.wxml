@@ -1,0 +1,83 @@
+<!-- pages/hotel/hotel.wxml 京东酒旅频道 -->
+<view class="page">
+  <!-- 顶部 banner -->
+  <view class="banner">
+    <view class="banner-tag">{{banner.tag}}</view>
+    <view class="banner-title">{{banner.title}}</view>
+    <view class="banner-desc">{{banner.desc}}</view>
+  </view>
+
+  <!-- tab 切换 -->
+  <view class="tabs">
+    <view wx:for="{{tabs}}" wx:key="index"
+      class="tab {{activeTab === index ? 'tab-active' : ''}}"
+      data-idx="{{index}}" bindtap="onSwitchTab">{{item}}</view>
+  </view>
+
+  <!-- 酒店 -->
+  <view wx:if="{{activeTab === 0}}" class="list">
+    <view wx:for="{{hotels}}" wx:key="id" class="card">
+      <view class="card-img">{{item.img}}</view>
+      <view class="card-body">
+        <view class="card-name">{{item.name}}</view>
+        <view class="card-sub">{{item.city}} · 评分 {{item.score}}</view>
+        <view class="card-tag">{{item.tag}}</view>
+        <view class="card-foot">
+          <view class="price-box">
+            <text class="price">¥{{item.price}}</text>
+            <text class="origin">¥{{item.origin}}</text>
+            <text class="bean">返{{item.bean}}豆</text>
+          </view>
+          <view class="btn" data-name="{{item.name}}" bindtap="onBook">预订</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 机票 -->
+  <view wx:if="{{activeTab === 1}}" class="list">
+    <view wx:for="{{flights}}" wx:key="id" class="card">
+      <view class="card-img">{{item.img}}</view>
+      <view class="card-body">
+        <view class="card-name">{{item.from}} → {{item.to}}</view>
+        <view class="card-sub">{{item.date}} 出发</view>
+        <view class="card-tag">{{item.tag}}</view>
+        <view class="card-foot">
+          <view class="price-box"><text class="price">¥{{item.price}}</text></view>
+          <view class="btn" data-name="{{item.from}}→{{item.to}}" bindtap="onGrab">抢低价</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 门票 -->
+  <view wx:if="{{activeTab === 2}}" class="list">
+    <view wx:for="{{tickets}}" wx:key="id" class="card">
+      <view class="card-img">{{item.img}}</view>
+      <view class="card-body">
+        <view class="card-name">{{item.name}}</view>
+        <view class="card-sub">{{item.city}}</view>
+        <view class="card-foot">
+          <view class="price-box"><text class="price">¥{{item.price}}</text><text class="bean">返{{item.bean}}豆</text></view>
+          <view class="btn" data-name="{{item.name}}" bindtap="onOrder">购买</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 度假 -->
+  <view wx:if="{{activeTab === 3}}" class="list">
+    <view wx:for="{{holidays}}" wx:key="id" class="card">
+      <view class="card-img">{{item.img}}</view>
+      <view class="card-body">
+        <view class="card-name">{{item.name}}</view>
+        <view class="card-sub">{{item.city}}</view>
+        <view class="card-tag">{{item.tag}}</view>
+        <view class="card-foot">
+          <view class="price-box"><text class="price">¥{{item.price}}</text><text class="bean">返{{item.bean}}豆</text></view>
+          <view class="btn" data-name="{{item.name}}" bindtap="onOrder">立即预订</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

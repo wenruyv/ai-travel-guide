@@ -1,0 +1,71 @@
+.container { padding: 24rpx; background: #f5f6fa; min-height: 100vh; }
+
+.post { background: #fff; border-radius: 16rpx; padding: 24rpx; }
+.post-head { display: flex; align-items: center; }
+.pm-btn { margin-left: auto; font-size: 22rpx; color: #fff; background: #2f80ed; padding: 8rpx 20rpx; border-radius: 26rpx; }
+.post-avatar {
+  width: 80rpx; height: 80rpx; line-height: 80rpx; text-align: center;
+  font-size: 44rpx; background: #f5f6fa; border-radius: 50%; margin-right: 16rpx;
+}
+.post-author { font-size: 30rpx; font-weight: bold; color: #222; }
+.post-loc { font-size: 22rpx; color: #999; margin-top: 4rpx; }
+.post-note { font-size: 30rpx; color: #333; line-height: 1.7; margin: 20rpx 0; }
+
+/* 图片墙 */
+.post-imgs { display: grid; gap: 8rpx; }
+.grid-1 { grid-template-columns: 1fr; }
+.grid-2 { grid-template-columns: 1fr 1fr; }
+.grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+.post-img {
+  aspect-ratio: 1;
+  background: #f0f2f5;
+  border-radius: 12rpx;
+  font-size: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.grid-1 .post-img { aspect-ratio: 16/10; }
+
+/* 标签 */
+.post-tags { margin-top: 20rpx; }
+.post-tag { color: #2f80ed; font-size: 24rpx; margin-right: 16rpx; }
+
+/* 操作栏 */
+.post-actions {
+  display: flex;
+  gap: 48rpx;
+  margin-top: 20rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+.act { font-size: 28rpx; color: #666; }
+.act.liked { color: #e1251b; }
+
+/* 评论 */
+.comments {
+  background: #f7f8fa;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  margin-top: 20rpx;
+}
+.comment { font-size: 27rpx; line-height: 1.8; }
+.comment-user { color: #2f80ed; }
+.comment-text { color: #333; }
+.comment-box { display: flex; gap: 12rpx; margin-top: 20rpx; }
+.comment-input {
+  flex: 1;
+  background: #f5f6fa;
+  border-radius: 40rpx;
+  padding: 16rpx 28rpx;
+  font-size: 27rpx;
+}
+.comment-send {
+  background: #2f80ed;
+  color: #fff;
+  font-size: 27rpx;
+  padding: 16rpx 32rpx;
+  border-radius: 40rpx;
+}
+
+.empty { text-align: center; color: #bbb; font-size: 28rpx; padding: 120rpx 0; }

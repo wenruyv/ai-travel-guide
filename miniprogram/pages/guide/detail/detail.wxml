@@ -1,0 +1,240 @@
+<view class="container" wx:if="{{guide}}">
+  <!-- 头部 -->
+  <view class="card head">
+    <view class="title">{{guide.title}}</view>
+    <view class="row subtitle mt8">
+      <text>📍{{guide.destination}}</text>
+      <text class="dot">·</text>
+      <text>{{guide.days}}天</text>
+      <text class="dot">·</text>
+      <text>预算¥{{guide.budget}}</text>
+    </view>
+    <view class="row author mt8">
+      <text wx:if="{{guide.source === 'ai'}}">🤖 {{guide.author}} <text class="ai-source">AI 智能生成</text></text>
+      <text wx:elif="{{guide.source === 'xhs' || guide.source === 'mafengwo'}}">📥 {{guide.rawAuthor}} <text class="raw-source-tag">{{guide.rawSource}}</text></text>
+      <text wx:else>✍️ 楼主：{{guide.author}}</text>
+      <text class="online">● 在线答疑</text>
+      <text class="pm-btn" bindtap="onPrivateChat">💬 私聊楼主</text>
+    </view>
+    <view wx:if="{{guide.source === 'ai'}}" class="ai-summary-bar mt8">📚 数据来源：本地攻略库 + 小红书 / 马蜂窝实时召回，可继续向 AI 行程助手追问～</view>
+    <view wx:if="{{guide.source === 'xhs' || guide.source === 'mafengwo'}}" class="raw-source-bar mt8">🤖 AI 已从 <text class="raw-source-name">{{guide.rawSource}}</text> 召回「{{guide.rawAuthor}}」的笔记并智能解析，可继续向 AI 行程助手追问～</view>
+
+    <!-- 原始召回笔记卡片（折叠） -->
+    <view wx:if="{{guide.source === 'xhs' || guide.source === 'mafengwo'}}" class="raw-source-card mt12">
+      <view class="raw-card-head" bindtap="toggleRawSource">
+        <text class="raw-avatar">{{guide.rawAvatar}}</text>
+        <view class="raw-head-info">
+          <view class="raw-title">{{guide.rawTitle}}</view>
+          <view class="row raw-stats">
+            <text class="raw-source-chip">{{guide.rawSource}}</text>
+            <text>·</text>
+            <text>👤 {{guide.rawAuthor}}</text>
+            <text>·</text>
+            <text>🕒 {{guide.rawTime}}</text>
+          </view>
+        </view>
+        <text class="raw-toggle">{{rawCollapsed ? '展开 ⌄' : '收起 ⌃'}}</text>
+      </view>
+
+      <view class="raw-body" wx:if="{{!rawCollapsed}}">
+        <view class="row raw-stats2">
+          <text class="raw-stat">👍 {{guide.rawStats.likes}}</text>
+          <text class="raw-stat">⭐ {{guide.rawStats.collects}}</text>
+          <text class="raw-stat">💬 {{guide.rawStats.comments}}</text>
+        </view>
+        <scroll-view scroll-x class="raw-images">
+          <view class="raw-img" wx:for="{{guide.rawImages}}" wx:key="*this">{{item}}</view>
+        </scroll-view>
+        <view class="raw-content">{{guide.rawContent}}</view>
+        <view class="row wrap raw-tags">
+          <text class="raw-tag" wx:for="{{guide.rawTags}}" wx:key="*this">{{item}}</text>
+        </view>
+        <view class="raw-foot">
+          <text class="raw-url">🔗 {{guide.rawUrl}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="mt16">{{guide.summary}}</view>
+    <view class="row wrap mt16">
+      <text class="tag" wx:for="{{guide.tags}}" wx:key="*this">{{item}}</text>
+    </view>
+    <view wx:if="{{editable}}" class="edit-flag mt16">✏️ 编辑模式：可修改各节点备注</view>
+  </view>
+
+  <!-- 行程时间轴 -->
+  <view class="card">
+    <view class="title">📅 行程安排</view>
+    <view class="tip subtitle mt8">💬 点节点「问楼主」，TA的回复会列在下方</view>
+    <view class="node" wx:for="{{guide.nodes}}" wx:key="title" wx:for-index="idx">
+      <view class="node-day">D{{item.day}}</view>
+      <view class="node-body">
+        <view class="row between">
+          <text class="node-title">{{item.title}}</text>
+          <text class="node-cost" wx:if="{{item.cost}}">¥{{item.cost}}</text>
+        </view>
+        <view class="node-loc subtitle mt8">📍{{item.location}}</view>
+
+        <!-- 备注：编辑态可改 -->
+        <textarea
+          wx:if="{{editable}}"
+          class="node-note-edit mt8"
+          value="{{item.note}}"
+          data-idx="{{idx}}"
+          bindinput="onEditNote"
+          auto-height
+        />
+        <view wx:else class="node-note mt8">💡 {{item.note}}</view>
+
+        <!-- 时间 -->
+        <view class="detail-row mt8" wx:if="{{item.timeSlot}}">
+          <text class="detail-label">🕐 时间</text>
+          <text class="detail-val">{{item.timeSlot}}</text>
+        </view>
+        <!-- 交通 -->
+        <view class="detail-row mt8" wx:if="{{item.transport}}">
+          <text class="detail-label">🚗 交通</text>
+          <text class="detail-val">{{item.transport}}</text>
+        </view>
+        <!-- 住宿 -->
+        <view class="detail-row mt8" wx:if="{{item.accommodation && item.accommodation !== '-'}}">
+          <text class="detail-label">🏨 住宿</text>
+          <text class="detail-val">{{item.accommodation}}</text>
+        </view>
+        <!-- 餐饮 -->
+        <view class="meal-block mt8" wx:if="{{item.meal}}">
+          <text class="detail-label">🍽️ 餐饮</text>
+          <view class="meal-item" wx:if="{{item.meal.breakfast && item.meal.breakfast !== '-'}}">
+            <text class="meal-tag">早</text>
+            <text class="meal-text">{{item.meal.breakfast}}</text>
+          </view>
+          <view class="meal-item" wx:if="{{item.meal.lunch && item.meal.lunch !== '-'}}">
+            <text class="meal-tag">午</text>
+            <text class="meal-text">{{item.meal.lunch}}</text>
+          </view>
+          <view class="meal-item" wx:if="{{item.meal.dinner && item.meal.dinner !== '-'}}">
+            <text class="meal-tag">晚</text>
+            <text class="meal-text">{{item.meal.dinner}}</text>
+          </view>
+        </view>
+
+        <!-- 楼主问答：小字列在该步下面 -->
+        <view class="talks" wx:if="{{talks[idx].length}}">
+          <view class="talk {{t.isAuthor ? 'author' : (t.user === '我' ? 'me' : '')}}" wx:for="{{talks[idx]}}" wx:for-item="t" wx:key="index">
+            <text class="talk-user">{{t.user}}{{t.isAuthor ? '(楼主)' : ''}}</text>
+            <text class="talk-text">{{t.text}}</text>
+          </view>
+        </view>
+
+        <!-- 就地问楼主入口 -->
+        <view class="ask-btn mt8" data-idx="{{idx}}" bindtap="onAskNode">💬 就这一步问楼主</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 京东酒旅推荐：跟着攻略订同款 -->
+  <view class="card jd-block" wx:if="{{recHotels.length}}">
+    <view class="row between">
+      <text class="title">🏨 跟着攻略订同款</text>
+      <text class="jd-more" bindtap="goHotel">京东酒旅 ›</text>
+    </view>
+    <view class="hotel-card" wx:for="{{recHotels}}" wx:key="id">
+      <view class="hotel-img">{{item.img}}</view>
+      <view class="hotel-info">
+        <view class="hotel-name">{{item.name}}</view>
+        <view class="row subtitle mt8">
+          <text>⭐{{item.score}}</text>
+          <text class="dot">·</text>
+          <text>{{item.city}}</text>
+        </view>
+        <view class="hotel-tag mt8">{{item.tag}} · 返{{item.bean}}京豆</view>
+      </view>
+      <view class="hotel-buy">
+        <view class="hotel-price">¥{{item.price}}<text class="hotel-origin">¥{{item.origin}}</text></view>
+        <view class="buy-btn" data-name="{{item.name}}" bindtap="onBookHotel">预订</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 行前装备清单：种草→加购 -->
+  <view class="card jd-block" wx:if="{{gears.length}}">
+    <view class="row between">
+      <text class="title">🎒 行前装备清单</text>
+      <text class="jd-more">京东自营 ›</text>
+    </view>
+    <view class="tip subtitle mt8">根据本攻略「{{guide.tags}}」智能推荐</view>
+    <view class="gear-grid mt16">
+      <view class="gear-item" wx:for="{{gears}}" wx:key="id">
+        <view class="gear-img">{{item.img}}</view>
+        <view class="gear-name">{{item.name}}</view>
+        <view class="gear-sales">{{item.sales}}</view>
+        <view class="row between gear-foot">
+          <text class="gear-price">¥{{item.price}}</text>
+          <view class="cart-btn" data-name="{{item.name}}" bindtap="onAddCart">+ 加购</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- AI 行程助手浮动入口（AI 生成的攻略才显示） -->
+<view class="ai-fab" wx:if="{{fromAi || guide}}" bindtap="openAi">
+  <text class="ai-fab-emoji">🤖</text>
+  <text class="ai-fab-txt">AI 助手</text>
+</view>
+
+<!-- AI 行程助手弹层 -->
+<view class="ai-mask" wx:if="{{aiVisible}}" bindtap="closeAi"></view>
+<view class="ai-panel {{aiVisible ? 'show' : ''}}">
+  <view class="row between ai-head">
+    <view class="row">
+      <text class="ai-head-emoji">🤖</text>
+      <text class="ai-head-title">AI 行程助手·小伴</text>
+      <text class="ai-head-tag">AI</text>
+    </view>
+    <text class="ai-close" bindtap="closeAi">✕</text>
+  </view>
+  <scroll-view class="ai-msgs" scroll-y scroll-into-view="{{'a-msg-' + (aiMessages.length - 1)}}">
+    <view wx:for="{{aiMessages}}" wx:key="idx" id="a-msg-{{index}}" class="ai-msg {{item.from === 'user' ? 'user' : 'ai'}}">
+      <text wx:if="{{item.from === 'ai'}}" class="ai-msg-avatar">🤖</text>
+      <view class="ai-msg-bubble">{{item.text}}</view>
+    </view>
+  </scroll-view>
+  <view class="ai-presets">
+    <view wx:for="{{aiPresets}}" wx:key="*this" class="ai-preset" data-v="{{item.label}}" bindtap="aiPresetTap">
+      <text class="ai-preset-emoji">{{item.icon}}</text>
+      <text>{{item.label}}</text>
+    </view>
+  </view>
+  <view class="ai-input-bar">
+    <input class="ai-input" placeholder="告诉小伴你想调整什么…" value="{{aiInput}}" bindinput="onAiInput" bindconfirm="doSendAi" />
+    <view class="ai-send" bindtap="doSendAi">发送</view>
+  </view>
+</view>
+
+<!-- 底部操作栏 --><view class="bottom-bar" wx:if="{{guide}}">
+  <block wx:if="{{editable}}">
+    <view class="btn btn-primary flex1" bindtap="onSave">保存我的攻略</view>
+  </block>
+  <block wx:else>
+    <view class="btn btn-ghost flex1" bindtap="onCopy">📋 一键复制并编辑</view>
+  </block>
+</view>
+
+<!-- 问楼主输入面板 -->
+<view class="ask-mask" wx:if="{{askVisible}}" bindtap="closeAsk"></view>
+<view class="ask-panel {{askVisible ? 'show' : ''}}">
+  <view class="row between ask-head">
+    <text class="title">问楼主 · {{askNodeTitle}}</text>
+    <text class="ask-close" bindtap="closeAsk">✕</text>
+  </view>
+  <view class="quick-qs" wx:if="{{quickQs.length}}">
+    <text class="subtitle">大家都在问：</text>
+    <view class="row wrap mt8">
+      <text class="quick-q" wx:for="{{quickQs}}" wx:key="*this" data-q="{{item}}" bindtap="onQuickAsk">{{item}}</text>
+    </view>
+  </view>
+  <view class="ask-input-bar">
+    <input class="ask-input" placeholder="向楼主提问，回复会变成弹幕~" value="{{askInput}}" bindinput="onAskInput" bindconfirm="onSendAsk" />
+    <view class="ask-send" bindtap="onSendAsk">发送</view>
+  </view>
+</view>

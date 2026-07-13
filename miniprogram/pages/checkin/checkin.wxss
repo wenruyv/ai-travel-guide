@@ -1,0 +1,154 @@
+.container { padding: 24rpx; padding-bottom: 140rpx; }
+.card { background: #fff; border-radius: 16rpx; padding: 24rpx; margin-bottom: 20rpx; }
+.title { font-size: 30rpx; font-weight: bold; color: #222; }
+.subtitle { font-size: 24rpx; color: #999; }
+.mt8 { margin-top: 8rpx; }
+.mt16 { margin-top: 16rpx; }
+.mt24 { margin-top: 24rpx; }
+.row { display: flex; align-items: center; }
+.between { justify-content: space-between; }
+
+/* 足迹地图 */
+.map-entry { background: linear-gradient(135deg, #2f80ed, #56ccf2); color: #fff; }
+.map-entry .title, .map-entry .subtitle { color: #fff; }
+.map-preview { font-size: 64rpx; }
+
+/* 帖子卡片 */
+.post { background: #fff; border-radius: 16rpx; padding: 24rpx; margin-bottom: 20rpx; }
+.post-head { display: flex; align-items: center; }
+.post-avatar {
+  width: 72rpx; height: 72rpx; line-height: 72rpx; text-align: center;
+  font-size: 40rpx; background: #f5f6fa; border-radius: 50%; margin-right: 16rpx;
+}
+.post-author { font-size: 28rpx; font-weight: bold; color: #222; }
+.post-loc { font-size: 22rpx; color: #999; margin-top: 4rpx; }
+.post-note { font-size: 28rpx; color: #333; line-height: 1.6; margin: 16rpx 0; }
+
+/* 图片墙 */
+.post-imgs { display: grid; gap: 8rpx; }
+.grid-1 { grid-template-columns: 1fr; }
+.grid-2 { grid-template-columns: 1fr 1fr; }
+.grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+.post-img {
+  aspect-ratio: 1;
+  background: #f0f2f5;
+  border-radius: 12rpx;
+  font-size: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.grid-1 .post-img { aspect-ratio: 16/10; }
+
+/* 标签 */
+.post-tags { margin-top: 16rpx; }
+.post-tag { color: #2f80ed; font-size: 24rpx; margin-right: 16rpx; }
+
+/* 操作栏 */
+.post-actions {
+  display: flex;
+  gap: 40rpx;
+  margin-top: 16rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+.act { font-size: 26rpx; color: #666; }
+.act.liked { color: #e1251b; }
+
+/* 评论 */
+.comments {
+  background: #f7f8fa;
+  border-radius: 12rpx;
+  padding: 16rpx;
+  margin-top: 16rpx;
+}
+.comment { font-size: 26rpx; line-height: 1.6; }
+.comment-user { color: #2f80ed; }
+.comment-text { color: #333; }
+.comment-box { display: flex; gap: 12rpx; margin-top: 16rpx; }
+.comment-input {
+  flex: 1;
+  background: #f5f6fa;
+  border-radius: 40rpx;
+  padding: 12rpx 24rpx;
+  font-size: 26rpx;
+}
+.comment-send {
+  background: #2f80ed;
+  color: #fff;
+  font-size: 26rpx;
+  padding: 12rpx 28rpx;
+  border-radius: 40rpx;
+}
+
+.empty { text-align: center; color: #bbb; font-size: 26rpx; padding: 60rpx 0; }
+
+/* 发帖悬浮按钮 */
+.fab {
+  position: fixed;
+  right: 40rpx;
+  bottom: 60rpx;
+  background: #2f80ed;
+  color: #fff;
+  font-size: 30rpx;
+  padding: 24rpx 40rpx;
+  border-radius: 50rpx;
+  box-shadow: 0 8rpx 24rpx rgba(47,128,237,0.4);
+}
+
+/* 弹窗 */
+.modal-mask {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 10;
+}
+.modal {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 11;
+  background: #fff; border-radius: 24rpx 24rpx 0 0; padding: 32rpx;
+  transform: translateY(100%); transition: transform 0.25s;
+  max-height: 85vh; overflow-y: auto;
+}
+.modal.show { transform: translateY(0); }
+.ai-close { font-size: 36rpx; color: #999; }
+
+/* 多图上传 */
+.upload-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16rpx; }
+.upload-img {
+  position: relative;
+  aspect-ratio: 1;
+  background: #f0f2f5;
+  border-radius: 12rpx;
+  font-size: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.upload-del {
+  position: absolute; top: -8rpx; right: -8rpx;
+  width: 36rpx; height: 36rpx; line-height: 36rpx; text-align: center;
+  background: rgba(0,0,0,0.6); color: #fff; border-radius: 50%; font-size: 22rpx;
+}
+.upload-add {
+  aspect-ratio: 1;
+  border: 2rpx dashed #ccc;
+  border-radius: 12rpx;
+  font-size: 56rpx;
+  color: #bbb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 表单 */
+.form-row { display: flex; align-items: center; }
+.form-col { display: flex; flex-direction: column; }
+.form-label { font-size: 28rpx; color: #333; width: 120rpx; }
+.form-input {
+  flex: 1; background: #f5f6fa; border-radius: 12rpx;
+  padding: 16rpx 24rpx; font-size: 28rpx;
+}
+.form-textarea {
+  width: 100%; box-sizing: border-box; background: #f5f6fa;
+  border-radius: 12rpx; padding: 16rpx 24rpx; font-size: 28rpx;
+  height: 160rpx; margin-top: 12rpx;
+}
+.btn { text-align: center; padding: 24rpx; border-radius: 44rpx; font-size: 30rpx; }
+.btn-primary { background: #2f80ed; color: #fff; }

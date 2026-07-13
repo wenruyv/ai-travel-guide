@@ -1,0 +1,184 @@
+.container {
+  padding-bottom: 140rpx;
+}
+.summary {
+  text-align: center;
+  background: linear-gradient(135deg, #2f80ed, #56ccf2);
+  color: #fff;
+}
+.summary .subtitle {
+  color: rgba(255,255, 255, 0.85);
+}
+.total-num {
+  font-size: 68rpx;
+  font-weight: 700;
+}
+.members {
+  justify-content: center;
+  gap: 12rpx;
+}
+.mini-avatar {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+}
+
+/* 明细 */
+.entry {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-top: 1rpx solid #f5f6fa;
+}
+.entry-cat {
+  width: 96rpx;
+  height: 64rpx;
+  line-height: 64rpx;
+  text-align: center;
+  border-radius: 12rpx;
+  background: #eef3fd;
+  color: #2f80ed;
+  font-size: 24rpx;
+  flex-shrink: 0;
+}
+.entry-mid {
+  flex: 1;
+  margin-left: 20rpx;
+}
+.entry-desc {
+  font-size: 28rpx;
+}
+.entry-amt {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #eb5757;
+}
+
+/* 结算 */
+.settle {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-top: 1rpx solid #f5f6fa;
+  font-size: 26rpx;
+}
+.s-from {
+  color: #eb5757;
+  font-weight: 500;
+}
+.s-arrow {
+  margin: 0 16rpx;
+  color: #8a8a8a;
+  font-size: 22rpx;
+}
+.s-to {
+  color: #27ae60;
+  font-weight: 500;
+}
+.s-amt {
+  margin-left: auto;
+  font-weight: 600;
+}
+
+/* 底部栏 */
+.bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  padding: 20rpx 24rpx;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.05);
+  display: flex;
+  gap: 16rpx;
+}
+.flex1 {
+  flex: 1;
+}
+
+/* 弹窗 */
+.modal-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+.modal {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: -100%;
+  background: #fff;
+ border-radius: 28rpx 28rpx 0 0;
+  padding: 32rpx;
+  z-index: 11;
+  transition: bottom 0.28s ease;
+}
+.modal.show {
+  bottom: 0;
+}
+.ai-close {
+  font-size: 36rpx;
+  color: #999;
+}
+.form-row {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f5f6fa;
+}
+.form-label {
+  width: 140rpx;
+  color: #555;
+}
+.form-input {
+  flex: 1;
+  font-size: 28rpx;
+}
+.picker {
+  flex: 1;
+  font-size: 28rpx;
+  color: #2f80ed;
+}
+
+/* 京东订单关联 */
+.jd-entry {
+  display: flex;
+  align-items: center;
+}
+.jd-entry-icon {
+  width: 72rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  text-align: center;
+  font-size: 40rpx;
+  background: #fff0ef;
+  border-radius: 16rpx;
+  margin-right: 20rpx;
+}
+.jd-entry-mid { flex: 1; }
+.jd-entry-arrow { color: #ccc; font-size: 44rpx; }
+.jd-order {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+.jd-order-img {
+  width: 72rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  text-align: center;
+  font-size: 40rpx;
+  background: #f5f6fa;
+  border-radius: 12rpx;
+  margin-right: 20rpx;
+}
+.jd-order-mid { flex: 1; }
+.jd-order-name { font-size: 28rpx; color: #222; }
+.jd-order-amt { color: #e1251b; font-size: 30rpx; font-weight: bold; }

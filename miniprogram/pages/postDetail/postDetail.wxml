@@ -1,0 +1,50 @@
+<view class="container" wx:if="{{post}}">
+  <view class="post">
+    <!-- 作者 -->
+    <view class="post-head">
+      <view class="post-avatar">{{post.avatar}}</view>
+      <view>
+        <view class="post-author">{{post.author}}</view>
+        <view class="post-loc">📍 {{post.location}} · {{post.date}}</view>
+      </view>
+      <view class="pm-btn" bindtap="onPrivateChat">💬 私聊作者</view>
+    </view>
+
+    <!-- 正文 -->
+    <view class="post-note">{{post.note}}</view>
+
+    <!-- 图片墙 -->
+    <view class="post-imgs grid-{{post.images.length>4?3:(post.images.length>1?2:1)}}">
+      <view class="post-img" wx:for="{{post.images}}" wx:key="index">{{item}}</view>
+    </view>
+
+    <!-- 标签 -->
+    <view class="post-tags" wx:if="{{post.tags.length}}">
+      <text class="post-tag" wx:for="{{post.tags}}" wx:key="*this"># {{item}}</text>
+    </view>
+
+    <!-- 操作栏 -->
+    <view class="post-actions">
+      <view class="act {{post.liked?'liked':''}}" bindtap="onLike">
+        {{post.liked?'❤️':'🤍'}} {{post.likes}}
+      </view>
+      <view class="act">💬 {{post.comments.length}}</view>
+    </view>
+
+    <!-- 评论列表 -->
+    <view class="comments" wx:if="{{post.comments.length}}">
+      <view class="comment" wx:for="{{post.comments}}" wx:key="index">
+        <text class="comment-user">{{item.user}}：</text>
+        <text class="comment-text">{{item.text}}</text>
+      </view>
+    </view>
+
+    <!-- 评论输入 -->
+    <view class="comment-box">
+      <input class="comment-input" placeholder="说点什么…" value="{{commentText}}" bindinput="onComment" />
+      <view class="comment-send" bindtap="sendComment">发送</view>
+    </view>
+  </view>
+</view>
+
+<view class="empty" wx:else>帖子不存在或已删除</view>

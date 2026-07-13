@@ -1,0 +1,102 @@
+<view class="container">
+  <!-- 汇总卡 -->
+  <view class="card summary">
+    <view class="subtitle">{{trip.tripName}} · {{trip.members.length}}人</view>
+    <view class="total-num mt8">¥{{total}}</view>
+    <view class="subtitle mt8">人均 ¥{{perPerson}}</view>
+    <view class="row members mt16">
+      <view class="mini-avatar" wx:for="{{trip.members}}" wx:key="id">{{item.avatar}}</view>
+    </view>
+  </view>
+
+  <!-- 账单明细 -->
+  <view class="card">
+    <view class="title">🧾 账单明细</view>
+    <view class="entry" wx:for="{{trip.entries}}" wx:key="id">
+      <view class="entry-cat">{{item.category}}</view>
+      <view class="entry-mid">
+        <view class="entry-desc">{{item.desc}}</view>
+        <view class="subtitle mt8">{{item.payer}} 垫付 · {{item.splitType}}</view>
+      </view>
+      <view class="entry-amt">¥{{item.amount}}</view>
+    </view>
+  </view>
+
+  <!-- 智能结算清单 -->
+  <view class="card">
+    <view class="title">💡 智能AA结算</view>
+    <block wx:if="{{settlements.length > 0}}">
+      <view class="settle" wx:for="{{settlements}}" wx:key="index">
+   <text class="s-from">{{item.from}}</text>
+        <text class="s-arrow">→ 转给 →</text>
+        <text class="s-to">{{item.to}}</text>
+        <text class="s-amt">¥{{item.amount}}</text>
+      </view>
+    </block>
+    <view wx:else class="subtitle">大家已平账，无需转账 🎉</view>
+  </view>
+
+  <!-- 京东订单一键关联入口 -->
+  <view class="card jd-entry" bindtap="openJd">
+    <view class="jd-entry-icon">🛒</view>
+    <view class="jd-entry-mid">
+      <view class="title">从京东订单导入</view>
+      <view class="subtitle mt8">酒店/门票/装备订单一键记账并均摊</view>
+    </view>
+    <view class="jd-entry-arrow">›</view>
+  </view>
+</view>
+
+<!-- 底部操作 -->
+<view class="bottom-bar">
+  <view class="btn btn-ghost flex1" bindtap="openAdd">＋ 记一笔</view>
+  <view class="btn btn-primary flex1" bindtap="onSettle">一键结算</view>
+</view>
+
+<!-- 记账弹窗 -->
+<view class="modal-mask" wx:if="{{showAdd}}" bindtap="closeAdd"></view>
+<view class="modal {{showAdd ? 'show' : ''}}">
+  <view class="row between">
+    <text class="title">记一笔</text>
+    <text class="ai-close" bindtap="closeAdd">✕</text>
+  </view>
+  <view class="form-row mt16">
+    <text class="form-label">金额</text>
+    <input class="form-input" type="digit" placeholder="0.00" value="{{form.amount}}" bindinput="onAmount" />
+  </view>
+  <view class="form-row">
+    <text class="form-label">分类</text>
+    <picker range="{{categories}}" bindchange="onCategory">
+      <view class="picker">{{form.category}} ▾</view>
+    </picker>
+  </view>
+  <view class="form-row">
+    <text class="form-label">垫付人</text>
+    <picker range="{{trip.members}}" range-key="name" bindchange="onPayer">
+      <view class="picker">{{trip.members[form.payerIndex].name}} ▾</view>
+    </picker>
+  </view>
+  <view class="form-row">
+    <text class="form-label">备注</text>
+    <input class="form-input" placeholder="选填" value="{{form.desc}}" bindinput="onDesc" />
+  </view>
+  <view class="btn btn-primary mt24" bindtap="saveEntry">保存并均摊</view>
+</view>
+
+<!-- 京东订单导入面板 -->
+<view class="modal-mask" wx:if="{{showJd}}" bindtap="closeJd"></view>
+<view class="modal {{showJd ? 'show' : ''}}">
+  <view class="row between">
+    <text class="title">从京东订单导入</text>
+    <text class="ai-close" bindtap="closeJd">✕</text>
+  </view>
+  <view class="subtitle mt8">选择京东酒旅订单，自动记账并按人数均摊</view>
+  <view class="jd-order" wx:for="{{jdOrders}}" wx:key="id" data-id="{{item.id}}" bindtap="importJd">
+    <view class="jd-order-img">{{item.img}}</view>
+    <view class="jd-order-mid">
+      <view class="jd-order-name">{{item.name}}</view>
+      <view class="subtitle mt8">{{item.category}} · {{item.date}}</view>
+    </view>
+    <view class="jd-order-amt">¥{{item.amount}}</view>
+  </view>
+</view>

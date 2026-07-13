@@ -1,0 +1,53 @@
+{
+  "pages": [
+    "pages/discover/discover",
+    "pages/aiGuide/aiGuide",
+    "pages/guide/list/list",
+    "pages/guide/detail/detail",
+    "pages/hotel/hotel",
+    "pages/buddy/buddy",
+    "pages/bill/bill",
+    "pages/checkin/checkin",
+    "pages/postDetail/postDetail",
+    "pages/chat/chat",
+    "pages/chatDetail/chatDetail",
+    "pages/mine/mine"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "旅伴",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f6fa"
+  },
+  "tabBar": {
+    "color": "#8a8a8a",
+    "selectedColor": "#2f80ed",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/discover/discover",
+        "text": "发现"
+      },
+      {
+        "pagePath": "pages/aiGuide/aiGuide",
+        "text": "攻略"
+      },
+      {
+        "pagePath": "pages/buddy/buddy",
+        "text": "搭子"
+      },
+      {
+        "pagePath": "pages/bill/bill",
+        "text": "旅账"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
